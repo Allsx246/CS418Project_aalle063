@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: lab(100% 0.01 -0.01 / 0.87);
-  background-color: #b18686;
+  background-color: #77879e;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -42,7 +42,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #322e2e;
   cursor: pointer;
   transition: border-color 0.25s;
 }

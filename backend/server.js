@@ -1,102 +1,25 @@
-/*import "dotenv/config";
-import { createTransport } from "nodemailer";
-import {createTransport} from "nodemailer";*/
+import { sendEmail } from './emailVerify.js';
+import express from 'express';
+import "dotenv/config";
+import { createConnection } from 'mysql2/promise';
+import cors from 'cors';
+import mysql from 'mysql';
+import bcrypt from 'bcrypt';
+import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 
-const express = require('express');
-const mysql2 = require('mysql2/promise');
-const mysql = require('mysql2');
-const cors = require('cors');
-const { genSaltSync, hashSync, compareSync } = require('bcrypt');
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:5174'
+    origin: 'http://localhost:5173'
 }));
 app.use(express.json());
 
 const hashPassword = (password) => {
-    const salt = genSaltSync(10);
+    const salt = genSaltSync();
     const hash = hashSync(password.toString(), salt);
     return hash;
 }
 
-/*
-// Create a transporter object using SMTP transport
-const transport = createTransport({
-host: "smtp.gmail.com", // Gmail SMTP server
-port: 587, // TLS port for Gmail
-secure: false, // Use TLS, not SSL
-requireTLS: true, // Force TLS
-auth: {
-user: process.env.SMTP_EMAIl, // Your Gmail address (from .env)
-pass: process.env.SMTP_PASSWORD, // Your Gmail app password (from .env)
-},
-});
-
-const mailOptions = {
-from: process.env.SMTP_EMAIl, // Sender address (must match authenticated user)
-to: email, // Recipient email
-subject: mailSubject, // Email subject line
-html: body, // Email body as HTML
-};
-
-// Load environment variables from .env file
-import "dotenv/config";
-// Import nodemailer's createTransport function
-import { createTransport } from "nodemailer";
-/**
-* Sends an email using SMTP (Gmail in this case)
-*
-* @param {string} email - Recipient's email address
-* @param {string} mailSubject - Subject of the email
-* @param {string} body - HTML content of the email
-*
-export function sendEmail(email, mailSubject, body) {
-// Create a transporter object using SMTP transport
-const transport = createTransport({
-host: "smtp.gmail.com", // Gmail SMTP server
-port: 587, // TLS port for Gmail
-secure: false, // Use TLS, not SSL
-requireTLS: true, // Force TLS
-auth: {
-user: process.env.SMTP_EMAIl, // Your Gmail address (from .env)
-pass: process.env.SMTP_PASSWORD, // Your Gmail app password (from .env)
-},
-});
-// Define email options
-const mailOptions = {
-from: process.env.SMTP_EMAIl, // Sender address (must match authenticated user)
-to: email, // Recipient email
-subject: mailSubject, // Email subject line
-html: body, // Email body as HTML
-};
-// Send the email
-transport.sendMail(mailOptions, function (err, result) {
-if (err) {
-console.log("Error in sending email"); // Log failure
-} else {
-console.log("Email has been sent"); // Log success
-}
-});
-}
-
-// 5) Generate OTP and store in DB (5 min expiry)
- const otp = Math.floor(100000 + Math.random() * 900000).toString(); 
- const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
-
-await connection.execute( ` INSERT INTO email_otp (email, otp, expires_at) VALUES (?, ?, ?)
-ON DUPLICATE KEY UPDATE
-otp = VALUES(otp), expires_at = VALUES(expires_at) `, [u_email, otp, expiresAt] );
-
-// 6) Send OTP via email 
-const subject = "Your Login OTP"; 
-const body = ` 
-<h2>Login Verification</h2>
-<p>Your OTP is:</p>
-<h1 style="letter-spacing:2px;">${otp}</h1>
-<p>This OTP will expire in 5 minutes.</p> `;
-
-sendEmail(u_email, subject, body);*/
 
 /**
 * Compares a raw (plain-text) password with a hashed password
@@ -108,122 +31,146 @@ sendEmail(u_email, subject, body);*/
 const comparePassword = (raw, hashedPassword) => {
 // Compare the plain-text password to the hash
 return compareSync(raw, hashedPassword);
+
 };
 
-const db2 = mysql2.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'secret',
-    database: 'login'
-});
 
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'secret',
+    password: '',
     database: 'login'
 });
 
 
-/*
-const insertAdmin = async () => {
-try{
 
-const [admin] =await db2.query('SELECT COUNT(*) FROM user WHERE is_admin = "yes" and is_verified = "yes"');
-const [rows] =await db2.query('SELECT COUNT(*) AS count FROM user');
-const rowCount = rows[0].count;
-const adminCount = admin[0].count;
-const sql1 = "INSERT INTO user (email, name, password, is_verified, is_admin)  VALUES (?)";
-const values1 = ['john@example.com', 'John Doe', hashPassword('password123'), "yes", "yes"];
 
-console.log(adminCount);
-if (rowCount === 0 || adminCount === 0) {
-db.query(sql1, [values1], (err, result) => {        
-
-    if (err) {
-        console.error("Error inserting Admin: ", err);
-    }
-    console.log("Admin inserted: ", result);
-});
-}
-} catch (err) {
-    console.error("Error checking user count: ", err);
-}
-
-}
-
-*/
-
-/*
-const sql = ('SELECT COUNT(*) FROM user WHERE is_admin = "yes" and is_verified = "yes"');
-const adminCount = admin[0].count;
-const sql1 = "INSERT INTO user (email, name, password, is_verified, is_admin)  VALUES (?)";
-const values1 = ['john@example.com', 'John Doe', hashPassword('password123'), "yes", "yes"];
-
-console.log(adminCount);
-
-db.query(sql, [values1], (err, result) => {        
-
-    if (result[0].count === 0) {
-        db.query(sql1, [values1], (err, result) =>  {
-
-            if (err) {
-                console.error("Error inserting Admin: ", err);
-                return;
-            }else{
-        console.error("Admin inserted: ", err);
-        return;
-
-        }
-        {
-        console.log("Admin already exists, skipping insertion.");
-        return;
-    }
-);
-}else{
-    console.log("Admin already exists, skipping insertion.");
-
-}});
-
-*/
+/**
+ * Handles user registration by inserting a new user 
+ * into the database with hashed password
+ */
 app.post('/signup', (req, res) => {
-    const sql = "INSERT INTO user (email, name, password) VALUES (?)";
-    const hash = hashPassword(req.body.password);
-   // insertAdmin();
-    const values = [req.body.email, req.body.name, hash];
+    const sql = "INSERT INTO user (email, name, password, is_admin, is_verified) VALUES (?)";
+    const hash = hashPassword(req.body.password.toString());
+  
+    const values = [req.body.email, req.body.name, hash, "no", "no"];
     db.query(sql, [values], (err, result) => {
       
 
         if (err) {
-            return res.json("Error");
+            return res.json("Error! Email already exists");
         }
-
+        console.log(req.body.password + "\n");
             return res.json(result);
     })
 })
 
+// Generate a 6-digit OTP and set an expiration time of 5 minutes
+const otp = Math.floor(100000 + Math.random() * 900000).toString(); 
+const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+/**
+ * Handles user registration by inserting a new user with a 
+ * one-time password into the database, which can be used for 
+ * email verification
+ */
+app.post('/login/otp', (req, res) => {
+    const sql = "INSERT INTO email_otp ( email, otp, expires_at) VALUES (?)";
+    const values = [req.body.email, otp, expiresAt];
+    db.query(sql, [values], (err, result) => {
+
+        if (err) {
+            console.error("Error during OTP insertion: ", err);
+            return res.json("Error! Failed to generate OTP");
+        }
+            
+        
+        console.log(req.body.password + "\n");
+            sendEmail(req.body.email, "Your OTP Code", `<p>Your OTP code is: </p><strong><h1 style="letter-spacing: 2px;">${otp}</h1></strong><p>This code will expire in 5 minutes.</p>`);
+            console.log("OTP generated and email sent: " + otp);
+            return res.json("Success " + otp);
+    })
+})
+
+
+
+
+/**
+ * Handles user login by verifying the provided 
+ * credentials against those stored in the database
+ */
 app.post('/login', (req, res) => {
     const sql = "SELECT password FROM user WHERE email = ?";
     db.query(sql, [req.body.email], (err, result) => {
    const hash = comparePassword(req.body.password.toString(), result[0].password.toString());
         if (err) {
-           // console.error("Error during login query: ", err);
+
+            console.error("Error during login query: ", err);
             return res.json("Error");
         }
         if(!hash){
+            
             return res.json("Password Incorrect");
         }
         if (result.length > 0) {
           console.log(err);
-            
+        
             return res.json("Success");
         } else {
-          
+          console.error("Error during login query: ", err);
             return res.json("Failure");
         }
     })
 })
 
+
+app.put('/verify-otp', (req, res) => {
+    const sql = "UPDATE user SET is_verified = 'yes' WHERE email = ?";
+    db.query(sql, [req.body.email], (err, result) => {
+        if (err) {
+            console.error("Error during OTP verification: ", err);
+            return res.json("Error! Failed to verify OTP");
+        }
+        else {
+            
+            return res.json("Account successfully verified");
+        }
+    });
+});
+
+
+app.get('/login/:email', async (req, res) => {
+    try{
+    const [rows] = await parseConnectionUrl.execute("SELECT * FROM user WHERE email = ?",
+    [req.params.email]
+    );
+
+    if (rows.length === 0) {
+        return res.status(404).json({
+            status: 404,
+            message: "User not found",
+            data: null
+        });
+    }
+    res.status(200).json({
+        status: 200,
+        message: "User retrieved successfully",
+        data: rows[0] 
+    });
+
+}catch(err){
+    res.status(500).json({
+        status:500,
+        message: err.message,
+        data: null
+    })
+}   });
+
+
+/**
+ * Establishes a connection to the MySQL database 
+ * and starts the Express server on port 8081
+ */
 db.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
@@ -231,7 +178,7 @@ db.connect((err) => {
     } 
 
         console.log('Connected to the database');
-       // insertAdmin();
+
         return;
 });
     
