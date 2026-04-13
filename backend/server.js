@@ -52,14 +52,14 @@ const db = mysql.createConnection({
  * Handles user registration by inserting a new user 
  * into the database with hashed password
  */
-app.post('/signup', (req, res) => {
+app.post('/signup', async (req, res) => {
     
 
     
     const sql = "INSERT INTO user (email, name, password, is_admin, is_verified) VALUES (?)";
     const hash = hashPassword(req.body.password.toString());
     const values = [req.body.email, req.body.name, hash, "no", "no"];
-    db.query(sql, [values], (err, result) => {
+    await db.execute(sql, [values], (err, result) => {
         
 
         if (err) {
@@ -81,10 +81,10 @@ const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
  * one-time password into the database, which can be used for 
  * email verification
  */
-app.post('/login/otp', (req, res) => {
+app.post('/login/otp', async (req, res) => {
     const sql = "INSERT INTO email_otp ( email, otp, expires_at) VALUES (?)";
     const values = [req.body.email, otp, expiresAt];
-    db.query(sql, [values], (err, result) => {
+    await db.execute(sql, [values], (err, result) => {
 
         if (err) {
             console.error("Error during OTP insertion: ", err);
@@ -106,9 +106,9 @@ app.post('/login/otp', (req, res) => {
  * Handles user login by verifying the provided 
  * credentials against those stored in the database
  */
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const sql = "SELECT * FROM user WHERE email = ?";
-    db.query(sql, [req.body.email], (err, result) => {
+    await db.execute(sql, [req.body.email], (err, result) => {
    
         if (err || result[0] === undefined || result[0].is_verified === "no" || result[0].is_verified === null) {
 
@@ -135,10 +135,10 @@ const hash = comparePassword(req.body.password.toString(), result[0].password.to
 /**
  * Verifies a user's email using a one-time password (OTP)
  */
-app.put('/verify-otp', (req, res) => {
+app.put('/verify-otp', async (req, res) => {
     const sql = "UPDATE user SET is_verified = 'yes' WHERE email = ?";
 
-    db.query(sql, [req.body.email], (err, result) => {
+    await db.execute(sql, [req.body.email], (err, result) => {
         if (err) {
             console.error("Error during OTP verification: ", err);
             return res.json("Error! Failed to verify OTP");
@@ -153,10 +153,10 @@ app.put('/verify-otp', (req, res) => {
 /** 
  * Handles password reset by updating the user's password in the database
  */
-app.post('/password-reset', (req, res) => {
+app.post('/password-reset', async (req, res) => {
     const sql = "UPDATE user SET password = ? WHERE email = ?";
     const hash = hashPassword(req.body.password.toString());
-    db.query(sql, [hash, req.body.email], (err, result) => {
+    await (await db).execute(sql, [hash, req.body.email], (err, result) => {
         if (err ) {
 
             console.error("Error during password reset: ", err);
@@ -170,9 +170,9 @@ app.post('/password-reset', (req, res) => {
     });
 });
 
-app.put('/profile/update-name', (req, res) => {
+app.put('/profile/update-name', async (req, res) => {
     const sql = "UPDATE user SET name = ? WHERE email = ?";
-    db.query(sql, [req.body.name, req.body.email], (err, result) => {
+    await db.execute(sql, [req.body.name, req.body.email], (err, result) => {
         if (err ) { 
             console.error("Error during name change: ", err);
             console.log("Name change failed for email: " + req.body.email + " Attempted new name: " + req.body.name);
@@ -189,19 +189,10 @@ app.put('/profile/update-name', (req, res) => {
  * Establishes a connection to the MySQL database 
  * and starts the Express server on port 8081
  */
-/** 
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-    return;
-    } 
 
-        console.log('Connected to the database');
 
-        return;
-});*/
-    
-app.listen(3306, () => {
+app.listen(process.env.PORT, () => {
     console.log('Listening on port 3306');
+    
 })
 
