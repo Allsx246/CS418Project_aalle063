@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 
 
-const app = express();
+const app = require('express');
 app.use(cors({
     origin: 'https://project-cs418.web.app'
 }));
