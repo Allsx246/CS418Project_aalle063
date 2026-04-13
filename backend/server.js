@@ -189,6 +189,7 @@ app.put('/profile/update-name', (req, res) => {
  * Establishes a connection to the MySQL database 
  * and starts the Express server on port 8081
  */
+/** 
 db.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
@@ -198,7 +199,7 @@ db.connect((err) => {
         console.log('Connected to the database');
 
         return;
-});
+});*/
     
 app.listen(3306, () => {
     console.log('Listening on port 3306');
