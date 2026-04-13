@@ -27,9 +27,10 @@ const handleSubmit = async (e) => {
   const err = Validation(values);
   setErrors(err);
   if(err.name ==="" && err.email ==="" && err.password ===""){
-    axios.post('http://localhost:8081/signup', values)
+    axios.post('https://project-cs418.web.app/signup', values)
     .then(res =>{
-        navigate("/login-otp");
+      if(res.data.includes('success')  ){
+         navigate("/login-otp");
          let data = {
           isLoggedIn: true,
           name: values.name.toString(),
@@ -37,6 +38,10 @@ const handleSubmit = async (e) => {
         }
 
         localStorage.setItem('name', data.name);
+    }else
+
+       alert("An account with that email already exists. Please try again with a different email.");
+        return;
 
     })
     .catch(err => console.log(err));
@@ -46,8 +51,13 @@ const handleSubmit = async (e) => {
 
 return (
   
-  <><Header /><div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign:'center', height: '100vh', }}>
-    <div style={{ padding: '15px', borderRadius: '10px', width: 'max-content', border: '1px solid #ccc', backgroundColor: 'rgb(107, 74, 74)' }}>
+  <><Header />
+  <div style={{ display: 'flex', justifyContent: 'space-evenly', 
+    alignItems: 'center', textAlign:'center', height: '100vh',  position: 'fixed',
+      top: '100px', left: '0', right: '0'}}>
+    <div style={{ padding: '15px', borderRadius: '10px', width: 'max-content', 
+      border: '1px solid #ccc', backgroundColor: '#f9f9f94b', 
+      position: 'relative' }}>
       <h2>Sign Up</h2>
       <form action="" onSubmit={handleSubmit}>
         <div className="form-group">

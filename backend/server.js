@@ -10,7 +10,7 @@ import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: 'https://project-cs418.web.app'
 }));
 app.use(express.json());
 
@@ -36,11 +36,26 @@ return compareSync(raw, hashedPassword);
 
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'login'
+    host: 'bcigajejrw9hgl0thlct-mysql.services.clever-cloud.com',
+    user: 'uxsuvjhutw6aqzet',
+    password: 'WJgsFjeHk0Djc8OhMKEH',
+    database: 'bcigajejrw9hgl0thlct'
 });
+
+const checkEmailExists = (email, callback) => {
+    const sqlCheck = "SELECT EXISTS(SELECT 1 FROM user WHERE email = ?)";
+    db.query(sqlCheck, [email], (err, result) => {
+        if (err) {
+            console.error("Error during email check: ", err);
+            return callback(err, null);
+        }   
+        if (result.length > 0) {
+            return callback(null, true);
+        }
+        return callback(null, false);
+    });  
+}
+
 
 
 
@@ -50,19 +65,23 @@ const db = mysql.createConnection({
  * into the database with hashed password
  */
 app.post('/signup', (req, res) => {
+    
+
+    
     const sql = "INSERT INTO user (email, name, password, is_admin, is_verified) VALUES (?)";
     const hash = hashPassword(req.body.password.toString());
-  
     const values = [req.body.email, req.body.name, hash, "no", "no"];
     db.query(sql, [values], (err, result) => {
-      
+        
 
         if (err) {
+
             return res.json("Error! Email already exists");
         }
         console.log(req.body.password + "\n");
-            return res.json(result);
+            return res.json(result + 'success');
     })
+
 })
 
 // Generate a 6-digit OTP and set an expiration time of 5 minutes
@@ -100,22 +119,24 @@ app.post('/login/otp', (req, res) => {
  * credentials against those stored in the database
  */
 app.post('/login', (req, res) => {
-    const sql = "SELECT password FROM user WHERE email = ?";
+    const sql = "SELECT * FROM user WHERE email = ?";
     db.query(sql, [req.body.email], (err, result) => {
-   const hash = comparePassword(req.body.password.toString(), result[0].password.toString());
-        if (err) {
+   
+        if (err || result[0] === undefined || result[0].is_verified === "no" || result[0].is_verified === null) {
 
-            console.error("Error during login query: ", err);
+            console.log("Error during login query: ", err);
             return res.json("Error");
         }
+const hash = comparePassword(req.body.password.toString(), result[0].password.toString());
+
         if(!hash){
             
             return res.json("Password Incorrect");
         }
         if (result.length > 0) {
-          console.log(err);
+          
         
-            return res.json("Success");
+            return res.json("Success" + (result[0].is_admin === "yes" ? " Admin" : " Student"));
         } else {
           console.error("Error during login query: ", err);
             return res.json("Failure");
@@ -123,9 +144,12 @@ app.post('/login', (req, res) => {
     })
 })
 
-
+/**
+ * Verifies a user's email using a one-time password (OTP)
+ */
 app.put('/verify-otp', (req, res) => {
     const sql = "UPDATE user SET is_verified = 'yes' WHERE email = ?";
+
     db.query(sql, [req.body.email], (err, result) => {
         if (err) {
             console.error("Error during OTP verification: ", err);
@@ -138,34 +162,40 @@ app.put('/verify-otp', (req, res) => {
     });
 });
 
+/** 
+ * Handles password reset by updating the user's password in the database
+ */
+app.post('/password-reset', (req, res) => {
+    const sql = "UPDATE user SET password = ? WHERE email = ?";
+    const hash = hashPassword(req.body.password.toString());
+    db.query(sql, [hash, req.body.email], (err, result) => {
+        if (err ) {
 
-app.get('/login/:email', async (req, res) => {
-    try{
-    const [rows] = await parseConnectionUrl.execute("SELECT * FROM user WHERE email = ?",
-    [req.params.email]
-    );
-
-    if (rows.length === 0) {
-        return res.status(404).json({
-            status: 404,
-            message: "User not found",
-            data: null
-        });
-    }
-    res.status(200).json({
-        status: 200,
-        message: "User retrieved successfully",
-        data: rows[0] 
+            console.error("Error during password reset: ", err);
+            return res.json("Error! Failed to reset password, make sure an account with that email exists");
+        }   
+        else {
+            console.log("Password reset successful for email: " + req.body.email);
+            return res.json("Password successfully reset");
+        }
+   
     });
+});
 
-}catch(err){
-    res.status(500).json({
-        status:500,
-        message: err.message,
-        data: null
-    })
-}   });
-
+app.put('/profile/update-name', (req, res) => {
+    const sql = "UPDATE user SET name = ? WHERE email = ?";
+    db.query(sql, [req.body.name, req.body.email], (err, result) => {
+        if (err ) { 
+            console.error("Error during name change: ", err);
+            console.log("Name change failed for email: " + req.body.email + " Attempted new name: " + req.body.name);
+            return res.json("Error! Failed to change name, make sure an account with that email exists");
+        }
+        else {
+            console.log("Name change successful for email: " + req.body.email + " New name: " + req.body.name);
+            return res.json("Name successfully changed");
+        }
+    });
+});
 
 /**
  * Establishes a connection to the MySQL database 
@@ -182,7 +212,7 @@ db.connect((err) => {
         return;
 });
     
-app.listen(8081, () => {
-    console.log('Listening on port 8081');
+app.listen(3306, () => {
+    console.log('Listening on port 3306');
 })
 

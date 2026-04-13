@@ -8,9 +8,14 @@ function LoggedOutHeader() {
     return (
         <form className="LoggedOutHeader">
         <Navbar >
-        <Container expand="lg" data-bs-theme="dark" style={{margins:"0", padding:"20px",textAlign:"right", backgroundColor:"#333", width:"93vw", overflow:"hidden"}}>
+        <Container expand="lg" data-bs-theme="dark" style={{margins:"0", padding:"20px",
+             backgroundColor:"#333", width:"100%" , overflow:"hidden",
+            display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', 
+            position: 'fixed', top: '0', left: '0', right: '0'
+            }}>
             <>
-            <NavbarBrand style={{color:"#fff", fontSize:"24px", textAlign:"start", fontWeight:"bold"}} href="#home"> My App</NavbarBrand>
+            <NavbarBrand style={{color:"#fff", fontSize:"24px", textAlign:"start", 
+                fontWeight:"bold"}} href="#home"> My App</NavbarBrand>
          </>
             <Nav.Link href="/"> Login</Nav.Link>
             <Nav.Link href="/signup"> Sign Up</Nav.Link>
@@ -32,9 +37,14 @@ function LoggedInHeader() {
     return (
         <form className="admin_header">
         <Navbar >
-        <Container expand="lg" data-bs-theme="dark" style={{margins:"0", padding:"20px",textAlign:"right", backgroundColor:"#333", width:"93vw", overflow:"hidden"}}>
+        <Container expand="lg" data-bs-theme="dark" style={{margins:"0", padding:"20px",
+            textAlign:"right", backgroundColor:"#333", width:"100%", overflow:"hidden",
+            display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', 
+            position: 'fixed', top: '0', left: '0', right: '0'
+            }}>
             <>
-            <NavbarBrand style={{color:"#fff", fontSize:"24px", textAlign:"start", fontWeight:"bold"}} href="#home"> My App</NavbarBrand>
+            <NavbarBrand style={{color:"#fff", fontSize:"24px", 
+                textAlign:"start", fontWeight:"bold"}} href="/dashboard"> My App</NavbarBrand>
             </>
         <Nav.Link href="/dashboard"> Dashboard</Nav.Link>
         <Nav.Link href="/profile"> Profile</Nav.Link>

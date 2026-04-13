@@ -19,31 +19,51 @@ const [errors, setErrors] = useState({})
   
   }
 
+
+
 const handleSubmit = (e) => {
   e.preventDefault();
   setErrors(Validation(values));
   const err = Validation(values);
   setErrors(err);
   if(err.email ==="" && err.password ===""){
-    axios.post('http://localhost:8081/login', values)
+    axios.post('https://project-cs418.web.app/login', values)
     .then(res =>{
-      if(res.data === "Success"){
+      if(res.data.includes("Success")){
         navigate("/dashboard");
+        if (res.data.includes("Admin")) {
+          let data = {
+            isLoggedIn: true,
+            userType: "Logged in",
+            user: 'Admin',
+            email: values.email.toString(),
+            password: values.password.toString(),
+
+          }
+          localStorage.setItem('email', data.email);
+          localStorage.setItem('user', data.user);
+          localStorage.setItem('userType', data.userType);
+          localStorage.setItem('password', data.password);
+        } else {
+
         let data = {
           isLoggedIn: true,
           userType: "Logged in",
+          user: 'Student',
           email: values.email.toString(),
           password: values.password.toString()
-
         }
         localStorage.setItem('email', data.email);
+        localStorage.setItem('user', data.user);
         localStorage.setItem('userType', data.userType);
         localStorage.setItem('password', data.password);
+
         }
-    else{
+    }else{
       
 
-        alert("No account found with those credentials. Please try again or create an account.");
+
+       alert("No account found with those credentials. Please try again, create an account, or verify your email.");
     }
     })
     .catch(err => console.log(err));
@@ -52,19 +72,22 @@ const handleSubmit = (e) => {
 
 
 return (
- <><Header /><div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign:'center' }}>
-    <div style={{ padding: '15px', borderRadius: '10px', width: 'max-content', border: '1px solid #ccc', backgroundColor: 'rgb(132, 98, 98)' }}>
-      <h2 style={{ color: '#141539' }}>Sign-in</h2>
+ <><Header />
+ <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', 
+  height: '100vh', textAlign:'center', width: '100%',  position: 'fixed',
+      top: '100px', left: '0', right: '0' }}>
+    <div style={{ padding: '15px', borderRadius: '10px', width: 'max-content', border: '1px solid #ccc', backgroundColor: '#f9f9f94b' }}>
+      <h2 >Sign-in</h2>
       <form action="" onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="email" style={{ color: '#141539' }}><strong>Email</strong></label>
+          <label htmlFor="email" ><strong>Email</strong></label>
           <input type="email" placeholder='Enter Email'
             name="email" onChange={handleInput}
             style={{ width: '100%', padding: '5px', borderRadius: '3px', border: '1px solid #ccc' }} />
           {errors.email && <span style={{ color: 'red' }}>{errors.email}</span>}
         </div>
         <div>
-          <label htmlFor="password" style={{ color: '#141539' }}><strong>Password</strong></label>
+          <label htmlFor="password" ><strong>Password</strong></label>
           <input type="password"
             placeholder='Enter Password'
             name="password" onChange={handleInput}
@@ -73,7 +96,9 @@ return (
         </div><p></p>
         <button type='submit' className='login button'>Login</button>
         <p></p>
-        <Link to="/signup" className='signup button'>Create an Account</Link>
+        <Link style={{ color: '#646cff'}} to="/signup" className='signup button'>Create an Account</Link>
+         <p></p>
+        <Link style={{ color: '#646cff' }} to="/password-reset" className='password-reset button'>Forgot Password?</Link>
       </form>
     </div>
   </div></>

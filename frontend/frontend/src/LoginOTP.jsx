@@ -21,7 +21,7 @@ const [email, setEmail] = useState('');
         setError('');
         try {
 
-           axios.post('http://localhost:8081/login/otp', { email })
+           axios.post('https://project-cs418.web.app/login/otp', { email })
             .then(res =>{
               if(res.data.includes("Success")){
              
@@ -61,7 +61,7 @@ const [email, setEmail] = useState('');
                 setLoading(false);
                 return;
             }
-            axios.put('http://localhost:8081/verify-otp', { email })
+            axios.put('https://project-cs418.web.app/verify-otp', { email })
             .then(res =>{
               if(res.data.includes("successfully")){
                 console.log('OTP verified:', otp);
@@ -74,16 +74,19 @@ const [email, setEmail] = useState('');
             .catch(err => console.log(err));
         } catch (err) {
             setError('Invalid OTP. Please try again.');
-            alert("Entered OTP: " + otp);
-            alert("Expected OTP: " + localStorage.getItem('otpValue'));
+            alert("Invalid OTP. Please try again.");
+    
         } finally {
             setLoading(false);
         }
     };
 
     return (
-       <><Header /><div style={{  display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign:'center' }}>
-    <div style={{ padding: '15px', borderRadius: '10px', width: 'fit-content', border: '1px solid #ccc'}}>
+       <><Header /><div style={{  display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', 
+       textAlign:'center', position: 'fixed', top: '100px', left: '0' }}>
+    <div style={{ padding: '15px', borderRadius: '10px', width: 'fit-content', 
+        border: '1px solid #ccc', position: 'fixed',
+      top: '100px', left: '0', right: '0', backgroundColor: 'rgb(132, 98, 98)' }}>
         <h2>Verify Email</h2>
             {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
 
