@@ -3,7 +3,7 @@ import express from 'express';
 import "dotenv/config";
 import { createConnection } from 'mysql2/promise';
 import cors from 'cors';
-import mysql from 'mysql';
+import mysql from 'mysql2/promise';
 import bcrypt from 'bcrypt';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 
@@ -42,19 +42,7 @@ const db = mysql.createConnection({
     database: 'bcigajejrw9hgl0thlct'
 });
 
-const checkEmailExists = (email, callback) => {
-    const sqlCheck = "SELECT EXISTS(SELECT 1 FROM user WHERE email = ?)";
-    db.query(sqlCheck, [email], (err, result) => {
-        if (err) {
-            console.error("Error during email check: ", err);
-            return callback(err, null);
-        }   
-        if (result.length > 0) {
-            return callback(null, true);
-        }
-        return callback(null, false);
-    });  
-}
+
 
 
 
