@@ -36,10 +36,10 @@ return compareSync(raw, hashedPassword);
 
 
 const db = mysql.createConnection({
-    host: 'bcigajejrw9hgl0thlct-mysql.services.clever-cloud.com',
-    user: 'uxsuvjhutw6aqzet',
-    password: 'WJgsFjeHk0Djc8OhMKEH',
-    database: 'bcigajejrw9hgl0thlct'
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.NAME
 });
 
 
@@ -191,8 +191,5 @@ app.put('/profile/update-name', async (req, res) => {
  */
 
 
-app.listen(process.env.PORT, () => {
-    console.log('Listening on port 3306');
-    
-})
+app.listen(process.env.PORT)
 
