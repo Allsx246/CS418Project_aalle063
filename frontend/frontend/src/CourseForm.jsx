@@ -41,7 +41,7 @@ export default function CourseForm() {
             coursePlan,
             email: localStorage.getItem('email')
         };
-        axios.post('https://project-cs418.web.app/course-advising', requestData)
+        axios.post('http://localhost:8081/course-advising', requestData)
             .then(res => {
                 if (res.data.includes("successful")) {  
                     alert("Course advising request submitted successfully!");

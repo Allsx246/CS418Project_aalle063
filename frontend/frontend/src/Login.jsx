@@ -27,7 +27,7 @@ const handleSubmit = (e) => {
   const err = Validation(values);
   setErrors(err);
   if(err.email ==="" && err.password ===""){
-    axios.post('https://project-cs418.web.app/login', values)
+    axios.post('http://localhost:8081/login', values)
     .then(res =>{
       if(res.data.includes("Success")){
         navigate("/dashboard");
@@ -60,10 +60,8 @@ const handleSubmit = (e) => {
 
         }
     }else{
-      
-
-
        alert("No account found with those credentials. Please try again, create an account, or verify your email.");
+       navigate('/login-otp');
     }
     })
     .catch(err => console.log(err));

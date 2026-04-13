@@ -9,7 +9,8 @@ function Admin_Dashboard() {
   return (
 
     
-      <><Header /><div style={{ padding: '20px', width: 'max-content', maxWidth: '1200px', height: '100vh', margin: '0 auto' }}>
+      <><Header /><div style={{ padding: '20px', width: 'max-content', maxWidth: '1200px', 
+        height: '100vh', margin: '0 auto',  position: 'fixed', top: '100px', left: '0', right: '0'  }}>
       <div style={{ display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', 
         marginTop: '20px', position: 'relative' }}>
@@ -18,7 +19,7 @@ function Admin_Dashboard() {
           backgroundColor: '#f9f9f94b', height: '100px' , display: 'flex', 
           flexDirection: 'column', justifyContent: 'center', alignItems: 'center',}}>
           <h3 style={{ textAlign: 'center' }}>Total Students</h3>
-          <p style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#141539' }}>0</p>
+          <p style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#141539' }}>1</p>
         </div>
         <div style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f94b' }}>
           <h3 style={{ textAlign: 'center' }}>Active Users</h3>

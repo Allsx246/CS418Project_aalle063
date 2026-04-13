@@ -27,7 +27,7 @@ const [errors, setErrors] = useState({})
 
         // TODO: Send password reset request to backend
         if (err.email === "" && err.password === "") {
-             axios.post('https://project-cs418.web.app/password-reset', { email: values.email, password: values.password }) 
+             axios.post('http://localhost:8081/password-reset', { email: values.email, password: values.password }) 
             .then(res =>{
                 if(res.data.includes("successful")){
                     alert("Password reset successful. Please log in with your new password.");

@@ -3,7 +3,7 @@ import express from 'express';
 import "dotenv/config";
 import { createConnection } from 'mysql2/promise';
 import cors from 'cors';
-import mysql from 'mysql2/promise';
+import mysql from 'mysql2';
 import bcrypt from 'bcrypt';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 
@@ -59,7 +59,7 @@ app.post('/signup', async (req, res) => {
     const sql = "INSERT INTO user (email, name, password, is_admin, is_verified) VALUES (?)";
     const hash = hashPassword(req.body.password.toString());
     const values = [req.body.email, req.body.name, hash, "no", "no"];
-    await db.execute(sql, [values], (err, result) => {
+   db.query(sql, [values], (err, result) => {
         
 
         if (err) {
@@ -84,7 +84,7 @@ const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 app.post('/login/otp', async (req, res) => {
     const sql = "INSERT INTO email_otp ( email, otp, expires_at) VALUES (?)";
     const values = [req.body.email, otp, expiresAt];
-    await db.execute(sql, [values], (err, result) => {
+     db.query(sql, [values], (err, result) => {
 
         if (err) {
             console.error("Error during OTP insertion: ", err);
@@ -108,7 +108,7 @@ app.post('/login/otp', async (req, res) => {
  */
 app.post('/login', async (req, res) => {
     const sql = "SELECT * FROM user WHERE email = ?";
-    await db.execute(sql, [req.body.email], (err, result) => {
+    db.query(sql, [req.body.email], (err, result) => {
    
         if (err || result[0] === undefined || result[0].is_verified === "no" || result[0].is_verified === null) {
 
@@ -138,13 +138,14 @@ const hash = comparePassword(req.body.password.toString(), result[0].password.to
 app.put('/verify-otp', async (req, res) => {
     const sql = "UPDATE user SET is_verified = 'yes' WHERE email = ?";
 
-    await db.execute(sql, [req.body.email], (err, result) => {
+     db.query(sql, [req.body.email], (err, result) => {
         if (err) {
             console.error("Error during OTP verification: ", err);
             return res.json("Error! Failed to verify OTP");
+            console.log(err)
         }
         else {
-            
+            console.log(err + '2')
             return res.json("Account successfully verified");
         }
     });
@@ -156,7 +157,7 @@ app.put('/verify-otp', async (req, res) => {
 app.post('/password-reset', async (req, res) => {
     const sql = "UPDATE user SET password = ? WHERE email = ?";
     const hash = hashPassword(req.body.password.toString());
-    await (await db).execute(sql, [hash, req.body.email], (err, result) => {
+    db.query(sql, [hash, req.body.email], (err, result) => {
         if (err ) {
 
             console.error("Error during password reset: ", err);
@@ -172,7 +173,7 @@ app.post('/password-reset', async (req, res) => {
 
 app.put('/profile/update-name', async (req, res) => {
     const sql = "UPDATE user SET name = ? WHERE email = ?";
-    await db.execute(sql, [req.body.name, req.body.email], (err, result) => {
+    db.query(sql, [req.body.name, req.body.email], (err, result) => {
         if (err ) { 
             console.error("Error during name change: ", err);
             console.log("Name change failed for email: " + req.body.email + " Attempted new name: " + req.body.name);
@@ -191,5 +192,5 @@ app.put('/profile/update-name', async (req, res) => {
  */
 
 
-app.listen(process.env.PORT)
+app.listen(8081)
 

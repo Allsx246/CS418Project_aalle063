@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import Validation from './LoginValidation';
 import Header from './Header';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +20,7 @@ const [email, setEmail] = useState('');
         setError('');
         try {
 
-           axios.post('https://project-cs418.web.app/login/otp', { email })
+           axios.post('http://localhost:8081/login/otp', { email })
             .then(res =>{
               if(res.data.includes("Success")){
              
@@ -39,7 +38,7 @@ const [email, setEmail] = useState('');
               }
                 otpValue = res.data.toString().split(" ")[1];
                 localStorage.setItem('otpValue', otpValue);
-                alert(otpValue);
+                
             })
             .catch(err => console.log(err));
         }    catch (err) {
@@ -50,31 +49,35 @@ const [email, setEmail] = useState('');
  
     };
 
+    const bool = (otp == localStorage.getItem('otpValue'))
     const handleVerifyOtp = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
         try {
           
-            if (otp !== localStorage.getItem('otpValue').toString()) {
+            if (otp !== localStorage.getItem('otpValue')) {
                 setError('Invalid OTP. Please try again.');
+
+                alert('OTP Value ' + localStorage.getItem('otpValue') + 'Are they equal: ' + bool)
                 setLoading(false);
                 return;
             }
-            axios.put('https://project-cs418.web.app/verify-otp', { email })
+            axios.put('http://localhost:8081/verify-otp', { email })
             .then(res =>{
               if(res.data.includes("successfully")){
                 console.log('OTP verified:', otp);
-                navigate("/dashboard");
+
+                navigate("/");
               } else {
                 setError('Invalid OTP. Please try again.');
-               
+               alert('OTP Value ' + localStorage.getItem('otpValue') + 'Are they equal2: ' + bool)
               }
             })
             .catch(err => console.log(err));
         } catch (err) {
             setError('Invalid OTP. Please try again.');
-            alert("Invalid OTP. Please try again.");
+            alert('OTP Value ' + localStorage.getItem('otpValue') + 'Are they equal3: ' + bool)
     
         } finally {
             setLoading(false);

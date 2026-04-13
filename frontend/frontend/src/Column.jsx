@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Link } from 'react-router-dom';
 import Header from './Header';
 
 export default function Column() {
@@ -84,7 +83,8 @@ export default function Column() {
                         </div></>
                 ))}
                 </div>
-            </div>
+                </div>
+                <Link to="/courses"style={{ marginTop: '20px' }}>Back</Link>
         </Container></>
     );
 }
