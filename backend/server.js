@@ -6,6 +6,7 @@ import cors from 'cors';
 import mysql from 'mysql2';
 import bcrypt from 'bcrypt';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
+import * as fs from 'node:fs';
 
 
 const app = express();
@@ -39,7 +40,10 @@ const db = mysql.createConnection({
     host: process.env.HOST,
     user: process.env.USER,
     password: process.env.PASSWORD,
-    database: process.env.NAME
+    database: process.env.NAME,
+    ssl:{
+    ca: fs.readFileSync("./isrgrootx1.pem")
+    }
 });
 
 
@@ -167,10 +171,13 @@ app.post('/password-reset', async (req, res) => {
             console.log("Password reset successful for email: " + req.body.email);
             return res.json("Password successfully reset");
         }
-   
     });
 });
 
+/**
+ * 
+ * 
+ */
 app.put('/profile/update-name', async (req, res) => {
     const sql = "UPDATE user SET name = ? WHERE email = ?";
     db.query(sql, [req.body.name, req.body.email], (err, result) => {
@@ -186,11 +193,19 @@ app.put('/profile/update-name', async (req, res) => {
     });
 });
 
+app.post('/course/history', async (req, res) =>{
+    const sql = "INSERT INT0 "
+
+
+});
+
+
+
+
 /**
  * Establishes a connection to the MySQL database 
  * and starts the Express server on port 8081
  */
-
 
 app.listen(8081)
 
