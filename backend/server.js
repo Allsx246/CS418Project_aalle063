@@ -204,8 +204,8 @@ app.post('/course/history', async (req, res) =>{
 
 /**
  * Establishes a connection to the MySQL database 
- * and starts the Express server on port 8081
+ * and starts the Express server on port 4000
  */
 
-app.listen(8081)
+app.listen(4000)
 
