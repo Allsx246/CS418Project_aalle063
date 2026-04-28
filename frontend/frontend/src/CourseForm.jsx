@@ -22,6 +22,7 @@ export default function CourseForm() {
         advising
     });
 
+    const [ready, setReady] = useState(false);
 const getSeason = (date) => {
   const month = date.getMonth(); // 0 is January, 11 is December
 
@@ -36,7 +37,18 @@ const getSeason = (date) => {
     const addToCoursePlan = (courseArray) => {
         
         let coursePlans =  JSON.parse(localStorage.getItem('term'));
-        
+        coursePlans.map((plan) => {
+            if(plan.seasons === getSeason(new Date(lastTerm)) + " " + new Date(lastTerm).getFullYear()){
+                coursePlans = plan;
+            }
+        console.log(
+           
+            "Season: " + plan.seasons + "\nYear: " + plan.year + "\nIs Course List Filled: " +
+            plan.courseNumList.length + "\nIs Course Plan Full: " +
+            plan.rows.length + "\nAdvising Term: " +
+            plan.advising + "\nLast Term: " + plan.lastTerm +
+            "\nSetting: " + plan.setting + "\nGPA: " + plan.GPA);
+        });
 
         coursePlans.seasons = getSeason(new Date(lastTerm)) + " " + new Date(lastTerm).getFullYear();
         coursePlans.GPA = GPA;
@@ -91,13 +103,6 @@ const handleInputChange = (e) => {
         setCourseInput(e.target.value);
     };
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            addToCoursePlan();
-        }
-    };
-
     const removeFromCoursePlan = (index) => {
         setCoursePlan(coursePlan.filter((_, i) => i !== index));
     };
@@ -115,7 +120,7 @@ const handleInputChange = (e) => {
                     top: '100px', left: '0', right: '0'
                 }}>
 
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignContent: 'center', gap: '20px' }}>
+                    <form onSubmit={handleSubmit} action="" style={{ display: 'flex', flexDirection: 'column', alignContent: 'center', gap: '20px' }}>
                         <h1 style={{ alignContent: 'center', textAlign: 'center' }}>Course Form</h1>
 
                         <div className="input-section">
@@ -168,11 +173,16 @@ const handleInputChange = (e) => {
                             </div>
                             <Link to="/courses" style={{ marginTop: '20px' }}>View Course History</Link>
                         </div>
-                        <div style={{ margin: '10px', padding: '10px', 
-                            gap: '20px', textAlign: 'center', alignContent: 'center' }}>
-                            <button onClick={addToCoursePlan && handleSubmit} type='submit'>Submit Plan</button>
-                        </div>
+                    
+                            <button type="button" style={{ margin: '10px', padding: '10px', 
+                            width: '100px', borderRadius: '5px', backgroundColor: '#646cff', color: 'white',
+                            gap: '20px'}} onClick={(e) => {
+                                            e.preventDefault()
+                                            setReady(true)
+                                            }}>Submit</button>
+                      
                     </form>
+                     
                 </div>
 
             </div></>

@@ -16,6 +16,7 @@ const app = express();
 
 app.use(cors({
     origin: 'https://project-cs418.web.app'
+
 }));
 app.use(express.json());
 
@@ -25,17 +26,17 @@ const hashPassword = (password) => {
     return hash;
 }
 
-app.use(helmet());
+// app.use(helmet());
 
-app.use(
-    helmet.contentSecurityPolicy({
-        directives: {
-            defaultSrc: ["'self'"],
-            frameAncestors: ["'self'"], 
-            //prevent framing from other sites
-        },
-    })
-);
+// app.use(
+//     helmet.contentSecurityPolicy({
+//         directives: {
+//             defaultSrc: ["'self'"],
+//             frameAncestors: ["'self'"], 
+//             //prevent framing from other sites
+//         },
+//     })
+// );
 
 
 
