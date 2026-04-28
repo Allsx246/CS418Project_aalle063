@@ -141,7 +141,7 @@ app.post('/course-advising', async (req, res) => {
          }
        
     });
- return res.json("Success! Course advising request submitted.");
+ return res.json("Successful! Course advising request submitted.");
     }
    
 });
