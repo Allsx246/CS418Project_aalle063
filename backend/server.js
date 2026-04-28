@@ -125,12 +125,13 @@ app.post('/login/otp', async (req, res) => {
  */
 app.post('/course-advising', async (req, res) => {
     
-    let coursePlan = JSON.stringify(req.body.coursePlan);
-
+    let coursePlan = req.body.coursePlan;
+    let coursePlanList;
     for(let i = 0; i < coursePlan.length; i++){
         const sql = "INSERT INTO course (email, name, term, gpa, advising, name, level) VALUES (?)";
-        coursePlan[i] = JSON.stringify(coursePlan[i]);
-        const values = [req.body.email, req.body.name, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(coursePlan[i])];
+        coursePlanList = JSON.stringify(coursePlan[i]);
+        const values = [req.body.email, req.body.name, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(coursePlanList)];
+        
         db.query(sql, [values], (err, result) => {
         if (err) {
             console.error("Error during course advising insertion: ", err);
