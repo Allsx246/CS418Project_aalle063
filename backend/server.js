@@ -13,6 +13,18 @@ import helmet from 'helmet';
 
 const app = express();
 
+
+app.use(cors({
+    origin: 'https://project-cs418.web.app'
+}));
+app.use(express.json());
+
+const hashPassword = (password) => {
+    const salt = genSaltSync();
+    const hash = hashSync(password.toString(), salt);
+    return hash;
+}
+
 app.use(helmet());
 
 app.use(
@@ -25,16 +37,6 @@ app.use(
     })
 );
 
-app.use(cors({
-    origin: 'https://project-cs418.web.app'
-}));
-app.use(express.json());
-
-const hashPassword = (password) => {
-    const salt = genSaltSync();
-    const hash = hashSync(password.toString(), salt);
-    return hash;
-}
 
 
 /**
@@ -131,7 +133,7 @@ app.post('/course-advising', async (req, res) => {
         const sql = "INSERT INTO course (email, name, term, gpa, advising, name, level) VALUES (?)";
         coursePlanList = JSON.stringify(coursePlan[i]);
         const values = [req.body.email, req.body.name, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(coursePlanList)];
-        
+
         db.query(sql, [values], (err, result) => {
         if (err) {
             console.error("Error during course advising insertion: ", err);

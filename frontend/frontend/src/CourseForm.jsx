@@ -81,8 +81,8 @@ const handleSubmit = (e) => {
                 }
             })
             .catch(err => {
-                console.error('Error submitting course advising request:', err.response.data || err.message);
-                alert('Failed to submit course advising request. Please try again.' + (err.response.data || err.message));
+                console.error('Error submitting course advising request:',  err.toString());
+                alert('Failed to submit course advising request. Please try again.' + err.toString());
             });
     };
 
@@ -170,7 +170,7 @@ const handleInputChange = (e) => {
                         </div>
                         <div style={{ margin: '10px', padding: '10px', 
                             gap: '20px', textAlign: 'center', alignContent: 'center' }}>
-                            <button onClick={addToCoursePlan} type='submit'>Submit Plan</button>
+                            <button onClick={addToCoursePlan && handleSubmit} type='submit'>Submit Plan</button>
                         </div>
                     </form>
                 </div>
