@@ -125,7 +125,8 @@ app.post('/login/otp', async (req, res) => {
  */
 app.post('/course-advising', async (req, res) => {
     
-    coursePlan = JSON.stringify(req.body.coursePlan);
+    let coursePlan = JSON.stringify(req.body.coursePlan);
+
     for(let i = 0; i < coursePlan.length; i++){
         const sql = "INSERT INTO course (email, name, term, gpa, advising, name, level) VALUES (?)";
         coursePlan[i] = JSON.stringify(coursePlan[i]);
