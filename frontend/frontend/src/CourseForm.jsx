@@ -45,12 +45,12 @@ const getSeason = (date) => {
         coursePlans.advising = new Date(advising);
     
 
-    // alert("Season: " + coursePlans.seasons + "\nYear: " + 
-    // coursePlans.year + "\nIs Course List Filled: " + 
-    // coursePlans.courseNumList.length + "\nIs Course Plan Full: " + 
-    // coursePlans.rows.length + "\nAdvising Term: " + 
-    // coursePlans.advising + "\nLast Term: " + coursePlans.lastTerm + 
-    // "\nSetting: " + coursePlans.setting + "\nGPA: " + coursePlans.GPA);
+    //  alert("Season: " + coursePlans.seasons + "\nYear: " + 
+    //  coursePlans.year + "\nIs Course List Filled: " + 
+    //  coursePlans.courseNumList.length + "\nIs Course Plan Full: " + 
+    //  coursePlans.rows.length + "\nAdvising Term: " + 
+    //  coursePlans.advising + "\nLast Term: " + coursePlans.lastTerm + 
+    //  "\nSetting: " + coursePlans.setting + "\nGPA: " + coursePlans.GPA);
 
     };
 
@@ -81,8 +81,8 @@ const handleSubmit = (e) => {
                 }
             })
             .catch(err => {
-                console.error('Error submitting course advising request:', err.response.data);
-                alert('Failed to submit course advising request. Please try again.');
+                console.error('Error submitting course advising request:', err.response.data || err.message);
+                alert('Failed to submit course advising request. Please try again.' + (err.response.data || err.message));
             });
     };
 
@@ -115,7 +115,7 @@ const handleInputChange = (e) => {
                     top: '100px', left: '0', right: '0'
                 }}>
 
-                    <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', alignContent: 'center', gap: '20px' }}>
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignContent: 'center', gap: '20px' }}>
                         <h1 style={{ alignContent: 'center', textAlign: 'center' }}>Course Form</h1>
 
                         <div className="input-section">

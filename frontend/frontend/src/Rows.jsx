@@ -98,13 +98,19 @@ const getSeason = (date) => {
                 setCourse({course: value});
                 setRows(prevRows => prevRows.map(row => 
                 row.id === id ? { ...row, course: value, courseNumber: value2 } : row ));
-                if(!term.courseNumList.includes(value2)){
+                term.courseNumList.map(course => {
+                if(course === value2){
+                        alert("Course already added to the course plan. Please Pick another course.");
+                        return;
+                }
+               
                 term.courseNumList.push(value2);
                 setHistory(term);
-                }
-        }
+                
+            });
+    }
 
-    };
+};
 
 
     const checkDuplicateCourses = (courseNum) => {
@@ -140,7 +146,7 @@ const saveCoursePlan = () => {
     
     rows.forEach(row => {
         if(row.level && row.course && row.courseNumber !== 0) {
-            term.rows.push(row);
+            term.rows = rows;
             alert("Course added to term: " + row.level + " " + row.course + " " + row.courseNumber);
         }else if(row.level === "" || row.course === "" || row.courseNumber === 0){
             alert("Please fill out all fields for each course before saving.");
