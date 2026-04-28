@@ -5,14 +5,22 @@ import { Link } from 'react-router-dom';
 import Header from './Header';
 
 export default function Column() {
-    const items = [
-        { date: '2/15/2024', term: 'Fall 2024', status: 'Description for item 1' },
-        { date: '10/15/2023', term: 'Summer 2023', status: 'Description for item 2' },
-        { date: '2/17/2024', term: 'Fall 2024', status: 'Description for item 3' },
-        { date: '9/3/2022', term: 'Fall 2022', status: 'Description for item 4' },
-        { date: '5/20/2023', term: 'Fall 2024', status: 'Description for item 5' },
-        { date: '12/20/2024', term: 'Fall 2024', status: 'Description for item 6' },
-    ];
+    const [items, setItems] = useState([
+        { date: '', term: '', status: '' }
+    ]);
+
+    const setSavedItems = () => {
+        let coursePlan = JSON.parse(localStorage.getItem('coursePlan'));
+        let term = JSON.parse(localStorage.getItem('term'));  
+        if ((coursePlan && term)) {
+            let newItem = {
+                date: term.lastTerm ? new Date(term.lastTerm).toLocaleDateString() : 'N/A',
+                term: term.seasons || 'N/A',
+                status: term.setting || 'N/A'
+            };
+            setItems(prevItems => [...prevItems, newItem]);
+        }  
+    };
 
     return (
         <><Header />

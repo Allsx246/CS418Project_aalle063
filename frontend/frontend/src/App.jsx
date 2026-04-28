@@ -10,13 +10,15 @@ import Header from './Header.jsx';
 import NameChange from './NameChange.jsx';
 import CourseForm from './CourseForm.jsx';
 import Column from './Column.jsx';
+import Rows from './Rows.jsx';
+import ClickJack from './ClickJack.jsx';
 
 
 function App() {
 
   return (
     
-     <Router>
+     <Router >
 
         <Routes>
           <Route path="/" element={<Login />} />
@@ -29,6 +31,8 @@ function App() {
           <Route path="/name-change" element={<NameChange />} />
           <Route path="/course-form" element={<CourseForm />} />
           <Route path="/column" element={<Column />} />
+          <Route path="/rows" element={<Rows />} />
+          <Route path="/clickjack" element={<ClickJack />} />
         </Routes>
       </Router>
   )

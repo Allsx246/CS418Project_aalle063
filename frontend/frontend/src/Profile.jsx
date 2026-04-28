@@ -30,11 +30,11 @@ const [errors, setErrors] = useState({})
         
 
         return (
+
             <>
                 <Header />
                 <div style={{ display: 'flex', justifyContent: 'center', 
-                  alignItems: 'center', height: '100%', textAlign:'center', position: 'fixed',
-      top: '100px', left: '0', right: '0' }}>
+                  alignItems: 'center', height: 'auto', textAlign:'center', position: 'relative', top: '100px' }}>
     <div style={{ padding: '150px', borderRadius: '10px', width: 'max-content', 
       border: '1px solid #ccc', backgroundColor: 'rgba(132, 98, 98, 0.41)' }}>
       <h2 style={{ color: '#141539' }}>Profile</h2>
@@ -55,7 +55,6 @@ const [errors, setErrors] = useState({})
             <p>{localStorage.getItem('password')}</p>
         <p></p>
         <button onClick={() => navigate("/password-reset")} className='login button'>Reset Password</button>
-  
         </div>
       </form>
     </div>

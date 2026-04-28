@@ -1,0 +1,80 @@
+[
+    {
+        "level": "100",
+        "courses": [
+        {"id":112, "name": "CS112 Information literacy" },
+        {"id":115, "name": "CS115 Intro to Comp. Sci. with Python" },
+        {"id":121, "name": "CS121 Intro. to Info. Lit. and Research" },
+        {"id":150, "name": "CS150 Into to Programming with C++" },
+        {"id":151, "name": "CS151 Intro. to Programming with Java" },
+        {"id":153, "name": "CS153 Intro to Programming with Python" },
+        {"id":170, "name": "CS170 Intro to Comp. Architecture" }
+    ]
+},
+    { 
+    "level":"200",
+    "courses" : [
+        {"id":222, "name": "CS222 Intro to Digital Image Processing"},
+        {"id":250, "name": "CS250 Programming with C++" },
+        {"id":251, "name": "CS251 Programming with Java" },
+        {"id":252, "name": "CS252 Intro to Unix for Programmers" },
+        {"id":260, "name": "CS260 C++ for Programmers" },
+        {"id":261, "name": "CS261 Java for Programmers" },
+        {"id":263, "name": "CS263 Python for Programmers" },
+        {"id":270, "name": "CS270 Intro to Comp. Architecture II" },
+        {"id":295, "name": "CS295 Topics in Computer Science" }
+    ]
+}, 
+    {"level":"300",
+        "courses":[
+        {"id":300, "name": "CS300T Computers in Society" },
+        {"id":312, "name": "CS312 Internet Concepts" },
+        {"id":315, "name": "CS315 Computer Science Undergraduate Colloquium" },
+        {"id":330, "name": "CS330 Object-Oriented Design and Programming" },
+        {"id":337, "name": "CS337 OOP and Foreign Function Interfaces in Rust" },
+        {"id":350, "name": "CS350 Intro to Software Engineering"},
+        {"id":355, "name": "CS355 Priciples of Programming Languages" },
+        {"id":361, "name": "CS361 Data Structures and Algorithms" },
+        {"id":381, "name": "CS381 Intro to Theoretical Comp. Sci." },
+        {"id":390, "name": "CS390 Topics in Computer Science" }
+    ]
+},
+    {"level": "400",
+        "courses" : [
+        {"id":402, "name": "CS402 Formal Software Foundations" },
+        {"id":410, "name": "CS410 Professional Workplace Development I" },
+        {"id":411, "name": "CS411W Professional Workplace Development II" },
+        {"id":417, "name": "CS417 Computational Methods and Software" },
+        {"id":418, "name": "CS418 Web Programming" },
+        {"id":422, "name": "CS422 Introduction to Machine Learning" },
+        {"id":431, "name": "CS431  Web Server Design" },
+        {"id":432, "name": "CS432 Web Science"},
+        {"id":433, "name": "CS433 Web Security" },
+        {"id":441, "name": "CS441 App Development for Smart Devices" },
+        {"id":445, "name": "CS445 Introduction to Quantum Computing" },
+        {"id":450, "name": "CS450 Database Concepts"},
+        {"id":454, "name": "CS454 Network Management" },
+        {"id":455, "name": "CS455 Introduction to Networks and Communications" },
+        {"id":458, "name": "CS458 Unix System Administration" },
+        {"id":460, "name": "CS460 Computer Graphics " },
+        {"id":462, "name": "CS462 Cybersecurity Fundamentals" },
+        {"id":463, "name": "CS463 Cryptography for Cybersecurity"},
+        {"id":464, "name": "CS464 Networked Systems Security"},
+        {"id":465, "name": "CS465 Information Assurance for Cybersecurity" },
+        {"id":466, "name": "CS466 Principles and Practice of Cyber Defense" },
+        {"id":467, "name": "CS467 Introduction to Reverse Software Engineering"},
+        {"id":468, "name": "CS468W  Research Methods in Mathematics and Sciences" },
+        {"id":469, "name": "CS469  Data Analytics for Cybersecurity" },
+        {"id":470, "name": "CS470  Introduction to Computer Architecture" },
+        {"id":471, "name": "CS471 Operating Systems" },
+        {"id":472, "name": "CS472  Network and Systems Security" },
+        {"id":475, "name": "CS476 Systems Programming" },
+        {"id":478, "name": "CS477 Computational Geometry, Methods and Applications" },
+        {"id":480, "name": "CS480 Introduction to Artificial Intelligence" },
+        {"id":481, "name": "CS481 Trustworthy Health Analytics" },
+        {"id":486, "name": "CS486 Introduction to Parallel Computing" },
+        {"id":487, "name": "CS487 Applied Parallel Computing" },
+        {"id":488, "name": "CS488 Principles of Compiler Construction" }
+        ]
+    }
+]

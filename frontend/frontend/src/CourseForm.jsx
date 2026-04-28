@@ -5,43 +5,73 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Table from './CourseHistory';
-
+import render from 'react-dom';
+import Rows from './Rows';
 
 
 export default function CourseForm() {
-    const [history, setHistory] = useState([]);
-    const [coursePlan, setCoursePlan] = useState([]);
+
+    
     const [courseInput, setCourseInput] = useState('');
     const [lastTerm, setLastTerm] = useState('');
     const [GPA, setGPA] = useState('');
     const [advising, setAdvising] = useState('');
+    const [coursePlan, setCoursePlan] = useState({
+        lastTerm,
+        GPA,
+        advising
+    });
 
-    const addToHistory = () => {
-        if (courseInput.trim()) {
-            setHistory([...history, courseInput]);
-            setCourseInput('');
-        }
-    };
+const getSeason = (date) => {
+  const month = date.getMonth(); // 0 is January, 11 is December
 
-    const addToCoursePlan = () => {
-        if (courseInput.trim()) {
-            setCoursePlan([...coursePlan, courseInput]);
-            setCourseInput('');
-        }
-    };
+    if (month >= 1 && month <= 5) return 'Spring';
+    if (month >= 6 && month <= 8) return 'Summer';
+    if (month >= 9 && month <= 11) return 'Autumn';
+    return 'Winter'; // Covers Nov, Dec, Jan
+};
 
+    const [coursePlans, setCoursePlans] = useState([]);
+
+    const addToCoursePlan = (courseArray) => {
+        
+        let coursePlans =  JSON.parse(localStorage.getItem('term'));
+        
+
+        coursePlans.seasons = getSeason(new Date(lastTerm)) + " " + new Date(lastTerm).getFullYear();
+        coursePlans.GPA = GPA;
+        coursePlans.year = new Date(lastTerm).getFullYear();
+        coursePlans.lastTerm = new Date(lastTerm);
+        coursePlans.advising = new Date(advising);
     
 
- const navigate = useNavigate();
+    // alert("Season: " + coursePlans.seasons + "\nYear: " + 
+    // coursePlans.year + "\nIs Course List Filled: " + 
+    // coursePlans.courseNumList.length + "\nIs Course Plan Full: " + 
+    // coursePlans.rows.length + "\nAdvising Term: " + 
+    // coursePlans.advising + "\nLast Term: " + coursePlans.lastTerm + 
+    // "\nSetting: " + coursePlans.setting + "\nGPA: " + coursePlans.GPA);
 
- const handleSubmit = (e) => {
+    };
+
+
+
+const navigate = useNavigate();
+
+const handleSubmit = (e) => {
         e.preventDefault();
+
+        addToCoursePlan();
         const requestData = {
-            history,
-            coursePlan,
-            email: localStorage.getItem('email')
+            lastTerm: coursePlan.lastTerm,
+            GPA: coursePlan.GPA,
+            advising: coursePlan.advising,
+            coursePlan: localStorage.getItem('term') ? JSON.parse(localStorage.getItem('term')).courseNumList : [],
+            email: localStorage.getItem('email'),
+            name: localStorage.getItem('name')
         };
-        axios.post('http://localhost:8081/course-advising', requestData)
+
+        axios.post('https://cs418project-aalle063.onrender.com/course-advising', requestData)
             .then(res => {
                 if (res.data.includes("successful")) {  
                     alert("Course advising request submitted successfully!");
@@ -56,6 +86,7 @@ export default function CourseForm() {
             });
     };
 
+    
 const handleInputChange = (e) => {
         setCourseInput(e.target.value);
     };
@@ -67,93 +98,84 @@ const handleInputChange = (e) => {
         }
     };
 
-   
-
-
-
-    const removeFromHistory = (index) => {
-        setHistory(history.filter((_, i) => i !== index));
-    };
-
     const removeFromCoursePlan = (index) => {
         setCoursePlan(coursePlan.filter((_, i) => i !== index));
     };
 
-    return (
-        <>
-        <Header />
 
-        
-        <div className="course-form" style={{ padding: '20px', width: 'max-content', 
-            maxWidth: '1200px', margin: '0 auto', height: '100vh', position: 'fixed',
-      top: '100px', left: '0', right: '0' }}>
-            
-            
 
-            <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
-            <h1>Course Management</h1>
+    return (   
+              <><div style={{ position: 'fixed' }}>
+            <Header />
+        </div><div>
 
-        <div className="input-section">
-                <h2>History</h2>
-                <input
-                    type="text"
-                    value={lastTerm}
-                    onChange={(e) => setLastTerm(e.target.value)}
-                    style={{ width: '300px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-                    placeholder="Enter course code or name"
-                    onClick={(e) => e.key === 'Enter' && addToCoursePlan()} /><p></p>
-                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                <input
-                    type="text"
-                    value={GPA}
-                    onChange={(e) => setGPA(e.target.value)}
-                    style={{ width: '300px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-                    placeholder="Enter course code or name"
-                    onClick={(e) => e.key === 'Enter' && addToCoursePlan()} /><p></p>
-                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                <div className="course-form" style={{
+                    padding: '20px', width: 'max-content', minHeight: 'fit-content', height: 'auto',
+                    maxWidth: '1200px', margin: '0 auto', position: 'relative',
+                    top: '100px', left: '0', right: '0'
+                }}>
 
-                <input
-                    type="text"
-                    value={advising}
-                    onChange={(e) => setAdvising(e.target.value)}
-                   
-                    style={{ width: '300px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-                    placeholder="Enter course code or name" />
-                <p></p>
-                    </div>
-                <button onClick={addToHistory}>Add to History</button> 
-                <button onClick={addToCoursePlan}>Add to Plan</button><p></p>
+                    <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', alignContent: 'center', gap: '20px' }}>
+                        <h1 style={{ alignContent: 'center', textAlign: 'center' }}>Course Form</h1>
+
+                        <div className="input-section">
+                            <h1 style={{ alignContent: 'center', textAlign: 'center' }}>History</h1>
+                            <div style={{
+                                display: 'flex', flexDirection: 'row', gap: '20px',
+                                alignContent: 'center', borderStyle: 'solid none', borderSpacing: "15px", padding: '15px'
+                            }}>
+                                Last Term
+                                <input
+                                    type="date"
+                                    value={lastTerm}
+                                    onChange={(e) => setLastTerm(e.target.value)}
+                                    style={{ width: '100px', borderRadius: '5px', border: '1px solid #ccc' }}
+                                    placeholder="Course term"
+                                    onClick={(e) => e.key === 'Enter' && addToCoursePlan()} />
+                                GPA
+                                <input
+                                    type="text"
+                                    value={GPA}
+                                    onChange={(e) => setGPA(e.target.value)}
+                                    style={{ width: '100px', borderRadius: '5px', border: '1px solid #ccc' }}
+                                    placeholder="Course GPA"
+                                    onClick={(e) => e.key === 'Enter' && addToCoursePlan()} />
+
+                                Current Advising Term
+                                <input
+                                    type="date"
+                                    value={advising}
+                                    onChange={(e) => setAdvising(e.target.value)}
+                                    style={{ width: '100px', borderRadius: '5px', border: '1px solid #ccc' }}
+                                    placeholder="Advising term" />
+
+                            </div>
+                        </div>
+
+                        
+
+                        <div className="section" style={{ alignContent: 'center', textAlign: 'center' }}>
+                            <h2>Course Plan</h2>
+                            <ul>
+                                
+                            </ul>
+
+                            <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', height: 'auto', alignContent: 'center' }}>
+                                
+                                <Rows>
+
+                                </Rows>
+                            </div>
+                            <Link to="/courses" style={{ marginTop: '20px' }}>View Course History</Link>
+                        </div>
+                        <div style={{ margin: '10px', padding: '10px', 
+                            gap: '20px', textAlign: 'center', alignContent: 'center' }}>
+                            <button onClick={addToCoursePlan} type='submit'>Submit Plan</button>
+                        </div>
+                    </form>
                 </div>
-        </div>
 
-            <div className="sections-container">
-                <div className="section">
-                    <h2>Course History</h2>
-                    <ul>
-                        {history.map((course, index) => (
-                            <li key={index}>
-                                {course}
-                                <button onClick={() => removeFromHistory(index)}>Remove</button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div className="section">
-                    <h2>Course Plan</h2>
-                    <ul>
-                        {coursePlan.map((course, index) => (
-                            <li key={index}>
-                                {course}
-                                <button onClick={() => removeFromCoursePlan(index)}>Remove</button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <Link to="/courses" style={{ marginTop: '20px' }}>View Course History</Link>
-            </div></form>
-        </div>
-
-        </>
+            </div></>
     );
 }
+

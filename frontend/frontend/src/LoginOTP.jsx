@@ -20,16 +20,15 @@ const [email, setEmail] = useState('');
         setError('');
         try {
 
-           axios.post('http://localhost:8081/login/otp', { email })
+           axios.post('https://cs418project-aalle063.onrender.com/login/otp', { email })
             .then(res =>{
               if(res.data.includes("Success")){
              
                 console.log('OTP verified:', otpValue);
-                alert("OTP sent to your email. Please check your inbox." + "OTP: " + res.data.toString().split(" ")[1]);
+                alert("OTP sent to your email. Please check your inbox.");
+               // + "OTP: " + res.data.toString().split(" ")[1]
                 setOtpSent(true);
-                
-                
-                
+       
                
                 
               }
@@ -59,11 +58,11 @@ const [email, setEmail] = useState('');
             if (otp !== localStorage.getItem('otpValue')) {
                 setError('Invalid OTP. Please try again.');
 
-                alert('OTP Value ' + localStorage.getItem('otpValue') + 'Are they equal: ' + bool)
+                
                 setLoading(false);
                 return;
             }
-            axios.put('http://localhost:8081/verify-otp', { email })
+            axios.put('https://cs418project-aalle063.onrender.com/verify-otp', { email })
             .then(res =>{
               if(res.data.includes("successfully")){
                 console.log('OTP verified:', otp);
@@ -71,14 +70,14 @@ const [email, setEmail] = useState('');
                 navigate("/");
               } else {
                 setError('Invalid OTP. Please try again.');
-               alert('OTP Value ' + localStorage.getItem('otpValue') + 'Are they equal2: ' + bool)
+             //  alert('OTP Value ' + localStorage.getItem('otpValue') + 'Are they equal2: ' + bool)
               }
             })
             .catch(err => console.log(err));
         } catch (err) {
             setError('Invalid OTP. Please try again.');
-            alert('OTP Value ' + localStorage.getItem('otpValue') + 'Are they equal3: ' + bool)
-    
+           // alert('OTP Value ' + localStorage.getItem('otpValue') + 'Are they equal3: ' + bool)
+           
         } finally {
             setLoading(false);
         }
@@ -86,10 +85,9 @@ const [email, setEmail] = useState('');
 
     return (
        <><Header /><div style={{  display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', 
-       textAlign:'center', position: 'fixed', top: '100px', left: '0' }}>
-    <div style={{ padding: '15px', borderRadius: '10px', width: 'fit-content', 
-        border: '1px solid #ccc', position: 'fixed',
-      top: '100px', left: '0', right: '0', backgroundColor: 'rgb(132, 98, 98)' }}>
+       textAlign:'center', position: 'fixed', top: '100px', left: '0', right: '0'  }}>
+    <div style={{ padding: '15px', borderRadius: '10px', width: 'max-content', 
+        border: '1px solid #ccc',  backgroundColor: 'rgb(132, 98, 98)' }}>
         <h2>Verify Email</h2>
             {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
 
@@ -101,8 +99,8 @@ const [email, setEmail] = useState('');
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '10px', marginBottom: '10px' }} /></div>
-                    <button type="submit" disabled={loading} style={{ width: '100%', padding: '10px', cursor: 'pointer' }}>
+                        style={{ width: 'max-content', padding: '10px', marginBottom: '10px'}} /></div>
+                    <button type="submit" disabled={loading} style={{ width: 'max-content', padding: '10px', cursor: 'pointer' }}>
                         {loading ? 'Sending...' : 'Send OTP'}
                     </button>
                 </form>
@@ -115,8 +113,8 @@ const [email, setEmail] = useState('');
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
-                    <button type="submit" disabled={loading} style={{ width: '100%', padding: '10px', cursor: 'pointer' }}>
+                        style={{ width: 'max-content', padding: '10px', marginBottom: '10px' }} />
+                    <button type="submit" disabled={loading} style={{ width: 'max-content', padding: '10px', cursor: 'pointer' }}>
                         {loading ? 'Verifying...' : 'Verify OTP'}
                     </button>
                 </form>

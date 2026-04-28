@@ -27,7 +27,7 @@ const handleSubmit = async (e) => {
   const err = Validation(values);
   setErrors(err);
   if(err.name ==="" && err.email ==="" && err.password ===""){
-    axios.post('http://localhost:8081/signup', values)
+    axios.post('https://cs418project-aalle063.onrender.com/signup', values)
     .then(res =>{
       if(res.data.includes('success')  ){
          navigate("/login-otp");

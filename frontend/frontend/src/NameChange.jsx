@@ -15,7 +15,7 @@ export default function NameChange() {
             setName('');
             alert("Name: " + name);
             setTimeout(() => setSubmitted(false), 3000);
-            axios.put('http://localhost:8081/profile/update-name', { name, email:localStorage.getItem('email').toString() })
+            axios.put('https://cs418project-aalle063.onrender.com/profile/update-name', { name, email:localStorage.getItem('email').toString() })
                 .then(res => {
                     if (res.data.includes("successful")) {
                         alert("Name updated successfully!");

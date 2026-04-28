@@ -7,8 +7,19 @@ import mysql from 'mysql2';
 import bcrypt from 'bcrypt';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import * as fs from 'node:fs';
+import helmet from 'helmet';
 
+app.use(helmet());
 
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            frameAncestors: ["'self'"], 
+            //prevent framing from other sites
+        },
+    })
+);
 const app = express();
 app.use(cors({
     origin: 'https://project-cs418.web.app'
@@ -104,7 +115,28 @@ app.post('/login/otp', async (req, res) => {
 })
 
 
-
+/**
+ * Handles course advising requests by inserting the provided course plan
+ * and related information into the database
+ */
+app.post('/course-advising', async (req, res) => {
+    
+    coursePlan = JSON.stringify(req.body.coursePlan);
+    for(let i = 0; i < coursePlan.length; i++){
+        const sql = "INSERT INTO course_advising (email, name, last_term, GPA, advising_term, course_plan) VALUES (?)";
+        coursePlan[i] = JSON.stringify(coursePlan[i]);
+        const values = [req.body.email, req.body.name, req.body.lastTerm, req.body.GPA, req.body.advising, JSON.stringify(req.body.coursePlan)];
+        db.query(sql, [values], (err, result) => {
+        if (err) {
+            console.error("Error during course advising insertion: ", err);
+            return res.json("Error! Failed to submit course advising request");
+         }
+       
+    });
+ return res.json("Success! Course advising request submitted.");
+    }
+   
+});
 
 /**
  * Handles user login by verifying the provided 
