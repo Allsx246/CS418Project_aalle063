@@ -9,6 +9,10 @@ import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import * as fs from 'node:fs';
 import helmet from 'helmet';
 
+
+
+const app = express();
+
 app.use(helmet());
 
 app.use(
@@ -20,7 +24,7 @@ app.use(
         },
     })
 );
-const app = express();
+
 app.use(cors({
     origin: 'https://project-cs418.web.app'
 }));
