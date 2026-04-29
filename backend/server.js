@@ -130,7 +130,7 @@ app.post('/course-advising', async (req, res) => {
     
     let coursePlan = req.body.coursePlan;
     let coursePlanList;
-    for(let i = 0; i < coursePlan.length; i++){
+    for(let i = 0; i < req.body.coursePlan; i++){
         const sql = "INSERT INTO course (email, name, term, gpa, advising, name, level) VALUES (?)";
         coursePlanList = JSON.stringify(coursePlan[i]);
         const values = [req.body.email, req.body.name, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(coursePlanList)];
