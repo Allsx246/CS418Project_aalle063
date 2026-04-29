@@ -98,7 +98,7 @@ const handleSubmit = (e) => {
             .then(res => {
                 if (res.data.includes("successful")) {  
                     alert("Course advising request submitted successfully!");
-                    navigate('/course-history');
+                    navigate('/courses');
                 } else {
                     alert("Failed to submit course advising request. Please try again." + res.data);
                 }

@@ -60,9 +60,10 @@ export default function CourseHistory() {
 
   useEffect(() => {
     const semesters = getSemesters();
-    console.log("Semesters: ", semesters);
+    console.log("Semesters: ", semesters + "email: " + localStorage.getItem('email'));
     axios.get('https://cs418project-aalle063.onrender.com/course-history', {
       params: { email: localStorage.getItem('email') }
+
     })
     .then(res => {
       if(res.data.length === 0){
@@ -70,6 +71,7 @@ export default function CourseHistory() {
         alert("No course history found for this user.");
         return;
       }
+      getSeason(res)
       console.log("Course history response: ", res.data);
 
       
@@ -86,26 +88,29 @@ export default function CourseHistory() {
         <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Course Advising History</h2>
         <Link to="/course-form" style={{ display: 'block', textAlign: 'center', marginBottom: '20px', color: '#141539', textDecoration: 'none' }}>
         Submit New Course Advising Request</Link> 
-      <p></p>
+      <p style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}></p>
+      <div>
       {semesters.term ? (
         <div style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f94b' }}>
           <h3 style={{ textAlign: 'center' }}>Semester:{semesters.term}</h3> 
           <p style={{ textAlign: 'center', color: '#666' }}>Status: {semesters.status}</p>
         </div>
       ) : ( 
-        <p style={{ textAlign: 'center', color: '#666' }}>No course advising history found.</p>
+        <p style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f94b' }}>No course advising history found.</p>
       )}
-      <p></p> 
+      <p></p></div>
+      <div> 
       {semesters.date ? (
-        <p style={{ textAlign: 'center', color: '#666' }}>Advising Date: {semesters.date.toLocaleDateString()}</p>
+        <p style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f94b' }}>Advising Date: {semesters.date.toLocaleDateString()}</p>
       ): ( 
-        <p style={{ textAlign: 'center', color: '#666' }}>No course advising history found.</p>
+        <p style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f94b' }}>No course advising history found.</p>
       )}
       {semesters.status ? (
-        <p style={{ textAlign: 'center', color: '#666' }}>Status: {semesters.status}</p>
+        <p style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f94b' }}>Status: {semesters.status}</p>
       ) : ( 
-        <p style={{ textAlign: 'center', color: '#666' }}>No course advising history found.</p>
+        <p style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f94b' }}>No course advising history found.</p>
       )}
+      </div>
       <p></p>
         {/* <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}></div>
           <div style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f94b' }}>

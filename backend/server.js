@@ -180,6 +180,7 @@ app.get('/course-history', async (req, res) => {
     db.query(sql, [req.body.email], (err, result) => {
         if (err) {
             console.error("Error fetching course history: ", err);
+            console.log("Email used for course history fetch: " + req.body.email);
             return res.json("Error! Failed to fetch course history");
         }
         return res.json(result);
