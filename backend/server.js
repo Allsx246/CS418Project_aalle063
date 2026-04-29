@@ -163,15 +163,28 @@ const hash = comparePassword(req.body.password.toString(), result[0].password.to
             return res.json("Password Incorrect");
         }
         if (result.length > 0) {
-          
         
             return res.json("Success" + (result[0].is_admin === "yes" ? " Admin" : " Student"));
         } else {
-          console.error("Error during login query: ", err);
+        console.error("Error during login query: ", err);
             return res.json("Failure");
         }
     })
 })
+
+/**
+ * 
+ */
+app.get('/course-history', async (req, res) => {
+    const sql = "SELECT * FROM course WHERE email = ?";
+    db.query(sql, [req.body.email], (err, result) => {
+        if (err) {
+            console.error("Error fetching course history: ", err);
+            return res.json("Error! Failed to fetch course history");
+        }
+        return res.json(result);
+    });
+});
 
 /**
  * Verifies a user's email using a one-time password (OTP)
