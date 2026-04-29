@@ -107,7 +107,7 @@ const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 app.post('/login/otp', async (req, res) => {
     const sql = "INSERT INTO email_otp ( email, otp, expires_at) VALUES (?)";
     const values = [req.body.email, otp, expiresAt];
-     db.query(sql, [values], (err, result) => {
+    db.query(sql, [values], (err, result) => {
 
         if (err) {
             console.error("Error during OTP insertion: ", err);
@@ -136,7 +136,7 @@ app.post('/course-advising', async (req, res) => {
     console.log("Received course advising request with course plan: ", coursePlan);
     for(let i = 0; i < coursePlan.length; i++){
         console.log("Course Plan " + i + ": " + coursePlan[i]);
-        values.push([req.body.email, req.body.name, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(coursePlan[i])]);
+        values.push([req.body.email, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(coursePlan[i])]);
 
     }
     await db.query(sql, [values], (err, result) => {

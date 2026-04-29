@@ -70,9 +70,9 @@ const handleSubmit = (e) => {
 
         addToCoursePlan();
         const requestData = {
-            lastTerm: coursePlan.lastTerm,
-            GPA: coursePlan.GPA,
-            advising: coursePlan.advising,
+            lastTerm: localStorage.getItem('term') ? JSON.parse(localStorage.getItem('term')).lastTerm : lastTerm,
+            GPA: localStorage.getItem('term') ? JSON.parse(localStorage.getItem('term')).GPA : GPA,
+            advising: localStorage.getItem('term') ? JSON.parse(localStorage.getItem('term')).advising : advising,
             coursePlan: localStorage.getItem('term') ? JSON.parse(localStorage.getItem('term')).courseNumList : [],
             email: localStorage.getItem('email'),
             name: localStorage.getItem('name')
