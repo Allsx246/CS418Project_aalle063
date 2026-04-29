@@ -86,7 +86,7 @@ const handleSubmit = (e) => {
             lastTerm: new Date(lastTerm),
             GPA: GPA,
             advising: new Date(advising),
-            level: coursePlans.courseNumList ? coursePlans.courseNumList : coursePlan,
+            level: JSON.parse(localStorage.getItem('courses')) ? JSON.parse(localStorage.getItem('courses')) : coursePlan,
             email: localStorage.getItem('email'),
             name: localStorage.getItem('name')
         };

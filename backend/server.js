@@ -132,7 +132,7 @@ app.post('/course-advising', async (req, res) => {
 
     const sql = "INSERT INTO course (email, term, gpa, advising, name, level) VALUES (?)";
 
-    const value=[req.body.email, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, req.body.level];
+    const value=[req.body.email, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(req.body.level)];
     db.query(sql, [value], (err, result) => {
         if (err) {
             console.error(" Error during course advising insertion: ", err);
