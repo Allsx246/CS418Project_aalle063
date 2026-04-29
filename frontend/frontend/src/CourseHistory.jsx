@@ -61,10 +61,7 @@ export default function CourseHistory() {
   useEffect(() => {
     const semesters = getSemesters();
     console.log("Semesters: ", semesters + "email: " + localStorage.getItem('email'));
-    axios.get('https://cs418project-aalle063.onrender.com/course-history', {
-      params: { email: localStorage.getItem('email') }
-
-    })
+    axios.post('https://cs418project-aalle063.onrender.com/course-history', {email: localStorage.getItem('email')})
     .then(res => {
       if(res.data.length === 0){
         console.log("No course history found for this user.");
