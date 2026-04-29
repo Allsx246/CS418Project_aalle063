@@ -86,13 +86,13 @@ const handleSubmit = (e) => {
             lastTerm: new Date(lastTerm),
             GPA: GPA,
             advising: new Date(advising),
-            coursePlan: coursePlans.courseNumList ? coursePlans.courseNumList : coursePlan,
+            level: coursePlans.courseNumList ? coursePlans.courseNumList : coursePlan,
             email: localStorage.getItem('email'),
             name: localStorage.getItem('name')
         };
-        console.log("Course Plan: " + typeof requestData.coursePlan + "\nCourse Plan Length: " + requestData.coursePlan.length);
+       // console.log("Course Plan: " + typeof requestData.coursePlan + "\nCourse Plan Length: " + requestData.coursePlan.length);
        // requestData.coursePlan.map(course => console.log("Courses in request data: " + course));
-        console.log("Last Term: " + requestData.lastTerm + "\nGPA: " + requestData.GPA + "\nAdvising Term: " + requestData.advising + "\nCourse Plan: " + requestData.coursePlan + "\nEmail: " + requestData.email + "\nName: " + requestData.name  );
+       // console.log("Last Term: " + requestData.lastTerm + "\nGPA: " + requestData.GPA + "\nAdvising Term: " + requestData.advising + "\nCourse Plan: " + requestData.coursePlan + "\nEmail: " + requestData.email + "\nName: " + requestData.name  );
 
         axios.post('https://cs418project-aalle063.onrender.com/course-advising', requestData)
             .then(res => {

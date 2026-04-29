@@ -129,20 +129,16 @@ app.post('/login/otp', async (req, res) => {
  */
 app.post('/course-advising', async (req, res) => {
     
-    
+
     const sql = "INSERT INTO course (email, term, gpa, advising, name, level) VALUES (?)";
     console.log("Received course advising request with course plan: ", coursePlan);
 
-    const value=([req.body.email, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, req.body.courseplan]);
-    
-    
-    db.query(sql, [values], (err, result) => {
+    const value=[req.body.email, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, req.body.level];
+    db.query(sql, [value], (err, result) => {
         if (err) {
-            console.error("Error during course advising insertion: ", err);
-            return res.json("Error! Failed to submit course advising request");
-            values = [];
+            console.error(" Error during course advising insertion: ", err);
+            return res.json(" Error! Failed to submit course advising request");
         }
-        values = [];
         return res.json("Course advising request successfully submitted.");
     });
 
