@@ -177,6 +177,7 @@ const hash = comparePassword(req.body.password.toString(), result[0].password.to
  */
 app.get('/course-history', async (req, res) => {
     const sql = "SELECT * FROM course WHERE email = ?";
+    console.log("Email received for course history fetch: " + req.body.email);
     db.query(sql, [req.body.email], (err, result) => {
         if (err) {
             console.error("Error fetching course history: ", err);

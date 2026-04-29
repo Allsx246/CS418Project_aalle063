@@ -76,9 +76,9 @@ export default function CourseHistory() {
 
       
     })
-    .catch(err => console.log("Error fetching course history: ", err));
+    .catch(err => console.log("Error fetching course history: ", err + "email: " + localStorage.getItem('email')));
 
-  }, []);
+  }, [getSemesters]);
 
 
     return (
