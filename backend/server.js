@@ -137,14 +137,14 @@ app.post('/course-advising', async (req, res) => {
     for(let i = 0; i < coursePlan.length; i++){
         console.log("Course Plan " + i + ": " + coursePlan[i]);
         values.push([req.body.email, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(coursePlan[i])]);
-
     }
     await db.query(sql, [values], (err, result) => {
         if (err) {
             console.error("Error during course advising insertion: ", err);
             return res.json("Error! Failed to submit course advising request");
+            values = [];
         }
-
+        values = [];
         return res.json("Course advising request successfully submitted.");
     });
 
