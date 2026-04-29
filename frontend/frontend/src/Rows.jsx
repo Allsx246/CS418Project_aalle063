@@ -213,18 +213,18 @@ const saveCoursePlan = () => {
                     ))}
                 </tbody>
             </table>
-            <button onClick={print} style={{ marginRight: '20px', backgroundColor: 'green', borderRadius:'50%', aspectRatio: '1/1', alignContent: 'center'}}>
+            <button type="button" onClick={print} style={{ marginRight: '20px', backgroundColor: 'green', borderRadius:'50%', aspectRatio: '1/1', alignContent: 'center'}}>
                     Print
             </button>
-            <button onClick={addRow} className="add-btn" style={{ marginLeft: '20px', backgroundColor: 'green', borderRadius:'50%', aspectRatio: '1/1', alignContent: 'center'}}>
+            <button type="button" onClick={addRow} className="add-btn" style={{ marginLeft: '20px', backgroundColor: 'green', borderRadius:'50%', aspectRatio: '1/1', alignContent: 'center'}}>
                 +
             </button>
             <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                <button onClick={saveCoursePlan} style={{ padding: '10px 20px', 
+                <button type = "button" onClick={saveCoursePlan} style={{ padding: '10px 20px', 
                     backgroundColor: '#7A779E', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
                     Save Course Plan
                 </button>
-                <button onClick={clearCoursePlan} style={{ padding: '10px 20px', marginLeft: '20px', backgroundColor: '#7A779E', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                <button type = "button" onClick={clearCoursePlan} style={{ padding: '10px 20px', marginLeft: '20px', backgroundColor: '#7A779E', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
                     Clear Course Plan
                 </button>
             </div>

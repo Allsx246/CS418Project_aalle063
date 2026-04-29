@@ -130,23 +130,24 @@ app.post('/login/otp', async (req, res) => {
 app.post('/course-advising', async (req, res) => {
     
     let coursePlan = req.body.coursePlan;
-    let coursePlanList;
+    let coursePlanList = [];
+    let values = [];
+    const sql = "INSERT INTO course (email, term, gpa, advising, name, level) VALUES (?)";
+    console.log("Received course advising request with course plan: ", coursePlan);
     for(let i = 0; i < coursePlan.length; i++){
         console.log("Course Plan " + i + ": " + coursePlan[i]);
-        const sql = "INSERT INTO course (email, name, term, gpa, advising, name, level) VALUES (?)";
-        coursePlanList = JSON.stringify(coursePlan[i]);
-        const values = [req.body.email, req.body.name, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(coursePlanList)];
+        values.push([req.body.email, req.body.name, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, JSON.stringify(coursePlan[i])]);
 
-        db.query(sql, [values], (err, result) => {
+    }
+    await db.query(sql, [values], (err, result) => {
         if (err) {
             console.error("Error during course advising insertion: ", err);
             return res.json("Error! Failed to submit course advising request");
-         }
-       
+        }
+
+        return res.json("Course advising request successfully submitted.");
     });
- return res.json("Successful! Course advising request submitted.");
-    }
-   
+
 });
 
 /**
