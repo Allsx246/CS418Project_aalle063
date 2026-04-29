@@ -11,7 +11,7 @@ import helmet from 'helmet';
 
 
 
-app.use(express.json());
+const app = express();
 
 const hashPassword = (password) => {
     const salt = genSaltSync();
@@ -19,9 +19,9 @@ const hashPassword = (password) => {
     return hash;
 }
 
-const app = express();
 
 
+app.use(express.json());
 app.use(cors({
     origin: 'https://project-cs418.web.app'
 
