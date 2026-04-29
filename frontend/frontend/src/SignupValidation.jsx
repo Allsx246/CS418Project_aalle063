@@ -4,7 +4,7 @@ export default function Validation(values) {
 
 let error = {}
 const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const password_pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 if(values.name === ""){
     error.name = "Name cannot be empty"
@@ -26,7 +26,7 @@ if(values.password === ""){
     error.password = "Password is required"
 
 }else if(!password_pattern.test(values.password)){
-    error.password = "Password is invalid"
+    error.password = "Password is invalid. Please ensure it is at least 8 characters long and includes at least one uppercase letter, one lowercase letter, one number, and one special character.";
 
 }else{
     error.password = ""
