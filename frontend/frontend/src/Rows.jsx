@@ -98,16 +98,11 @@ const getSeason = (date) => {
                 setCourse({course: value});
                 setRows(prevRows => prevRows.map(row => 
                 row.id === id ? { ...row, course: value, courseNumber: value2 } : row ));
-                term.courseNumList.map(course => {
-                if(course === value2){
-                        alert("Course already added to the course plan. Please Pick another course.");
-                        return;
-                }
-               
-                term.courseNumList.push(value2);
-                setHistory(term);
-                
-            });
+                rows.forEach(row => {
+                    if(row.id === id && !term.courseNumList.includes(value2)){
+                        term.courseNumList.push(value2);
+                    }
+                });
     }
 
 };
@@ -126,9 +121,7 @@ const getSeason = (date) => {
             }
             alert("Level: " + row.level + " courses: " + row.course +' Course Number: ' + row.courseNumber + ' Rows: ' + row.id)
         });
-        term.courseNumList.forEach(course => {
-            alert("Course Number: " + course);
-        });
+    
     }
 
     const clearCoursePlan = () => {

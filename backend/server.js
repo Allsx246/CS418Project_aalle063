@@ -11,13 +11,6 @@ import helmet from 'helmet';
 
 
 
-const app = express();
-
-
-app.use(cors({
-    origin: 'https://project-cs418.web.app'
-
-}));
 app.use(express.json());
 
 const hashPassword = (password) => {
@@ -25,6 +18,14 @@ const hashPassword = (password) => {
     const hash = hashSync(password.toString(), salt);
     return hash;
 }
+
+const app = express();
+
+
+app.use(cors({
+    origin: 'https://project-cs418.web.app'
+
+}));
 
 // app.use(helmet());
 
