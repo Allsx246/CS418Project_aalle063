@@ -107,6 +107,7 @@ const getSeason = (date) => {
 
 };
 
+    
 
     const checkDuplicateCourses = (courseNum) => {
         return rows.some(row => row.courseNumber === courseNum);
@@ -192,7 +193,7 @@ const saveCoursePlan = () => {
                                     getOptionValue={x => x.level}
                                     onChange={(e) => updateRow(row.id, "level", e.level)}
                                     placeholder= {row.level ? row.level : "Select Level"}
-                                    styles={customStyles}
+                                    styles={customStyles} isSearchable={false}
                                     style={{  
                     alignContent: 'center', alignItems:'center', width: '100%', color: 'black'}}> 
                                 
@@ -208,17 +209,17 @@ const saveCoursePlan = () => {
                                     onChange={(e) => updateRow(row.id, "course", e.name, e.id)}
                                     placeholder= {row.course ? row.course : "Select Course"}
                                     options={ ' - ' , courseList} getOptionLabel={x => x.name}
-                                    getOptionValue={x => x.name, x => x.id}
+                                    getOptionValue={x => x.name, x => x.id} isSearchable={false}
                                     styles={customStyles}
-                                >
+                                />
 
-                                </Select>
+                            
 
                             </td>
                             <td>
                                 <button onClick={() => deleteRow(row.id)} className="delete-btn"
                                     style={{ width: 'auto', backgroundColor: 'red', borderRadius: '50%', aspectRatio: '1/1', alignContent: 'center', textAlign: 'center'}}>
-                                 -
+                                -
                                 </button>
                             </td>
                         </tr>
@@ -231,6 +232,13 @@ const saveCoursePlan = () => {
             <button type="button" onClick={addRow} className="add-btn" style={{ marginLeft: '20px', backgroundColor: 'green', borderRadius:'50%', aspectRatio: '1/1', alignContent: 'center'}}>
                 +
             </button>
+            <div>
+                            <Select type='select' style={{ width: '100px', borderRadius: '5px', border: '1px solid #ccc' }} placeholder='Status: Pending ' isDisabled={localStorage.getItem('userRole') === 'Student' ? true : false} value={term.setting} isSearchable={false} onChange={(e) => setHistory({...term, setting: e.target.value})}>
+                            <option value='Pending'>Pending</option>
+                            <option value='Approved'>Approved</option>
+                            <option value='Denied'>Denied</option>
+                            </Select>
+                </div>
             <div style={{ marginTop: '20px', textAlign: 'center' }}>
                 <button type = "button" onClick={saveCoursePlan} style={{ padding: '10px 20px', 
                     backgroundColor: '#7A779E', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>

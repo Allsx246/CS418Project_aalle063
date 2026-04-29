@@ -29,10 +29,7 @@ function LoggedOutHeader() {
 
 function LoggedInHeader() {
 
-    let data = {
-  isLoggedIn: false,
-  userType: "Logged out"
-}
+
 
     return (
         <form className="admin_header" style={{position:'fixed', top:'0', left:'0', right:'0'}}>
@@ -50,13 +47,7 @@ function LoggedInHeader() {
         <Nav.Link href="/profile"> Profile</Nav.Link>
         <Nav.Link href="/signup"> Sign Up</Nav.Link>
         <Nav.Link href="/" onClick={() => {
-            localStorage.setItem('userType', data.userType);
-            localStorage.setItem('email', '');
-            localStorage.setItem('user', '');
-            localStorage.setItem('password', '');
-            localStorage.setItem('term', '');
-            localStorage.setItem('coursePlan', '');
-            localStorage.setItem('history', '');
+            localStorage.clear();
         }}> Logout </Nav.Link>
         
         </Container>

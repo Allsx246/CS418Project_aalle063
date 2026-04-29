@@ -115,11 +115,28 @@ app.post('/login/otp', async (req, res) => {
         }
             
         
-        console.log(req.body.password + "\n");
+        console.log(req.body.email + "\n");
             sendEmail(req.body.email, "Your OTP Code", `<p>Your OTP code is: </p><strong><h1 style="letter-spacing: 2px;">${otp}</h1></strong><p>This code will expire in 5 minutes.</p>`);
             console.log("OTP generated and email sent: " + otp);
             return res.json("Success " + otp);
     })
+})
+
+app.post('/admin', async(req, res) =>{
+    const sql = "SELECT * FROM course";
+    db.query(sql, (err,result) => {
+
+        if(err){
+            console.error("Error extracting accounts from database: " + err);
+            return res.json("Error! Failed toe extract data")
+        }
+
+        console.log("Success");
+        return res.json("successfully extrated account information");
+    })
+
+
+
 })
 
 

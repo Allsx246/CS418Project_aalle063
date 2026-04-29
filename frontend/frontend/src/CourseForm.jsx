@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -23,7 +23,7 @@ export default function CourseForm() {
     });
 
     const[courseList, setCourseList] = useState([]);
-    const [ready, setReady] = useState(false);
+
 const getSeason = (date) => {
   const month = date.getMonth(); // 0 is January, 11 is December
 
@@ -34,6 +34,7 @@ const getSeason = (date) => {
 };
 
     const [coursePlans, setCoursePlans] = useState([]);
+    const [ready, setReady] = useState(false);
 
     const addToCoursePlan = (courseArray) => {
         
@@ -67,6 +68,16 @@ const getSeason = (date) => {
 
     };
 
+    useEffect(() => {
+        if(localStorage.getItem('review') === 'true'){
+            let semesterData = JSON.parse(localStorage.getItem('semester'));
+            // setLastTerm(semesterData.lastTerm ? new Date(semesterData.lastTerm).toISOString().split('T')[0] : '');
+            // setGPA(semesterData.GPA || '');
+            // setAdvising(semesterData.advising ? new Date(semesterData.advising).toISOString().split('T')[0] : '');
+            // setCourseList(semesterData.courseHistory || []);
+        }
+    }, []);
+
 
 
 const navigate = useNavigate();
@@ -88,7 +99,8 @@ const handleSubmit = (e) => {
             advising: new Date(advising),
             level: JSON.parse(localStorage.getItem('courses')) ? JSON.parse(localStorage.getItem('courses')) : coursePlan,
             email: localStorage.getItem('email'),
-            name: localStorage.getItem('name')
+            name: localStorage.getItem('name'),
+            status: localStorage.getItem('term').setting ? localStorage.getItem('term').setting : 'Pending'
         };
        // console.log("Course Plan: " + typeof requestData.coursePlan + "\nCourse Plan Length: " + requestData.coursePlan.length);
        // requestData.coursePlan.map(course => console.log("Courses in request data: " + course));
@@ -110,6 +122,8 @@ const handleSubmit = (e) => {
     };
 
     
+        
+
 const handleInputChange = (e) => {
         setCourseInput(e.target.value);
     };
@@ -146,7 +160,7 @@ const handleInputChange = (e) => {
                                     value={lastTerm}
                                     onChange={(e) => setLastTerm(e.target.value)}
                                     style={{ width: '100px', borderRadius: '5px', border: '1px solid #ccc' }}
-                                    placeholder="Course term"
+                                    placeholder="Course term" disabled={localStorage.getItem('review') === 'true' ? false : true}
                                     onClick={(e) => e.key === 'Enter' && addToCoursePlan()} />
                                 GPA
                                 <input
@@ -154,16 +168,16 @@ const handleInputChange = (e) => {
                                     value={GPA}
                                     onChange={(e) => setGPA(e.target.value)}
                                     style={{ width: '100px', borderRadius: '5px', border: '1px solid #ccc' }}
-                                    placeholder="Course GPA"
+                                    placeholder={"Course GPA"} disabled={localStorage.getItem('review') === 'true' ? false : true}
                                     onClick={(e) => e.key === 'Enter' && addToCoursePlan()} />
 
                                 Current Advising Term
                                 <input
                                     type="date"
-                                    value={advising}
+                                    value={advising} disabled={localStorage.getItem('review') === 'true' ? false : true}
                                     onChange={(e) => setAdvising(e.target.value)}
                                     style={{ width: '100px', borderRadius: '5px', border: '1px solid #ccc' }}
-                                    placeholder="Advising term" />
+                                    placeholder={localStorage.getItem('review') === 'true' ? "Advising term" : "Advising term"} />
 
                             </div>
                         </div>
@@ -178,14 +192,15 @@ const handleInputChange = (e) => {
 
                             <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', height: 'auto', alignContent: 'center' }}>
                                 
-                                <Rows>
+                                <Rows/>
 
-                                </Rows>
+                               
                             </div>
+                           
                             <Link to="/courses" style={{ marginTop: '20px' }}>View Course History</Link>
                         </div>
                     
-                            <button type="submit" style={{ margin: '10px', padding: '10px', 
+                            <button id="submit-btn" type="submit" style={{ margin: '10px', padding: '10px', 
                             width: '100px', borderRadius: '5px', backgroundColor: '#646cff', color: 'white',
                             gap: '20px'}} onClick={(e) => {
                                             e.preventDefault()
