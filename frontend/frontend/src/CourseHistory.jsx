@@ -74,6 +74,7 @@ export default function CourseHistory() {
   };
 
   useEffect(() => {
+   
     const semesters = getSemesters();
     console.log("Semesters: ", semesters + "email: " + localStorage.getItem('email'));
     axios.post('https://cs418project-aalle063.onrender.com/course-history', {email: localStorage.getItem('email')})
@@ -91,7 +92,7 @@ export default function CourseHistory() {
     })
     .catch(err => console.log("Error fetching course history: ", err + "email: " + localStorage.getItem('email')));
 
-  }, []);
+}, []);
 
 
     return (

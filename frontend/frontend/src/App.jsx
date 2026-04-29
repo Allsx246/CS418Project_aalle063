@@ -12,6 +12,7 @@ import CourseForm from './CourseForm.jsx';
 import Column from './Column.jsx';
 import Rows from './Rows.jsx';
 import ClickJack from './ClickJack.jsx';
+import Admin from './Admin.jsx';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/column" element={<Column />} />
           <Route path="/rows" element={<Rows />} />
           <Route path="/clickjack" element={<ClickJack />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </Router>
   )

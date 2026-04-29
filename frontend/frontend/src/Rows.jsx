@@ -172,7 +172,9 @@ const saveCoursePlan = () => {
 }
 
 
+const Check = () =>{
 
+}
 
 
     return (
@@ -190,7 +192,7 @@ const saveCoursePlan = () => {
                                 <Select
                                     value={row.level}
                                     options={' - ', courses} getOptionLabel={x => x.level}
-                                    getOptionValue={x => x.level}
+                                    getOptionValue={x => x.level} 
                                     onChange={(e) => updateRow(row.id, "level", e.level)}
                                     placeholder= {row.level ? row.level : "Select Level"}
                                     styles={customStyles} isSearchable={false}

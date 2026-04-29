@@ -2,6 +2,7 @@ import Header from './Header'
 import CourseHistory from './CourseHistory'
 import {Link} from 'react-router-dom'
 import ClickJack from './ClickJack'
+import Admin from './Admin'
 
 function Admin_Dashboard() {
 
@@ -18,8 +19,9 @@ function Admin_Dashboard() {
           border: '1px solid #ddd', borderRadius: '8px', 
           backgroundColor: '#f9f9f94b', height: '100px' , display: 'flex', 
           flexDirection: 'column', justifyContent: 'center', alignItems: 'center',}}>
-          <h3 style={{ textAlign: 'center' }}>Total Students</h3>
+         <Link src='./Admin.jsx'>  <h3 style={{ textAlign: 'center' }}>Total Students</h3>   </Link>
           <p style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#141539' }}>1</p>
+       
         </div>
         <div style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f94b' }}>
           <h3 style={{ textAlign: 'center' }}>Active Users</h3>

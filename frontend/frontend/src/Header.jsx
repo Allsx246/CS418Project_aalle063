@@ -28,6 +28,11 @@ function LoggedOutHeader() {
 
 
 function LoggedInHeader() {
+    const adminOnly = () =>{
+        if(localStorage.getItem('userRoles')){
+        <Nav.Link href="/admin">Admin</Nav.Link>}
+    }
+
 
 
 
@@ -43,6 +48,7 @@ function LoggedInHeader() {
             <NavbarBrand style={{color:"#fff", fontSize:"24px", 
                 textAlign:"start", fontWeight:"bold"}} href="/dashboard"> My App</NavbarBrand>
             </>
+                {adminOnly}
         <Nav.Link href="/dashboard"> Dashboard</Nav.Link>
         <Nav.Link href="/profile"> Profile</Nav.Link>
         <Nav.Link href="/signup"> Sign Up</Nav.Link>
