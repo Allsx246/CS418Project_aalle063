@@ -119,10 +119,20 @@ const getSeason = (date) => {
                 alert("Please fill out all fields for each course before printing.");
                 return;
             }
-            alert("Level: " + row.level + " courses: " + row.course +' Course Number: ' + row.courseNumber + ' Rows: ' + row.id)
+        term.courseNumList.forEach(courseNum => {
+            if(courseNum === row.courseNumber){
+                console.log("Course added to term: " + row.level + " " + row.course + " " + courseNum);
+            }
+            console.log("Course added to term: " + row.level + " " + row.course + " " + courseNum);
         });
+            alert("Level: " + row.level + " courses: " + row.course +' Course Number: ' + row.courseNumber + ' Rows: ' + row.id)
+            
+            }
+        );
+        console.log("Course Num Size: " + term.courseNumList.length);
     
     }
+
 
     const clearCoursePlan = () => {
         setRows([{ id: 1, level: '', course: '', courseNumber: 0 }]);
@@ -136,11 +146,12 @@ const getSeason = (date) => {
 const saveCoursePlan = () => {
     // This function would handle saving the course plan, e.g., sending it to a backend server.
     // For now, it just logs the course plan to the console.
+
     
     rows.forEach(row => {
         if(row.level && row.course && row.courseNumber !== 0) {
             term.rows = rows;
-            alert("Course added to term: " + row.level + " " + row.course + " " + row.courseNumber);
+           // alert("Course added to term: " + row.level + " " + row.course + " " + row.courseNumber);
         }else if(row.level === "" || row.course === "" || row.courseNumber === 0){
             alert("Please fill out all fields for each course before saving.");
             return;
@@ -150,11 +161,12 @@ const saveCoursePlan = () => {
         }   
         return;
     });
+    JSON.stringify(term.courseNumList);
     term.setting = "Pending";
-
     localStorage.setItem('coursePlan', JSON.stringify(rows));
     localStorage.setItem('term', JSON.stringify(term));
-    console.log("Course Plan:", rows);
+    localStorage.setItem("courses", JSON.stringify(term.courseNumList));
+    console.log("Course Num Size: " + term.courseNumList.length);
     alert("Course plan saved!");
 }
 

@@ -37,27 +37,33 @@ const getSeason = (date) => {
 
     const addToCoursePlan = (courseArray) => {
         
-        let coursePlans =  JSON.parse(localStorage.getItem('term'));
-        coursePlans.courseNumList.map(value => {
+        let coursePlans =  JSON.parse(localStorage.getItem('term')) ? JSON.parse(localStorage.getItem('term')) : {  };
+        setCourseList(JSON.parse(localStorage.getItem('courses'))) ? JSON.parse(localStorage.getItem('courses')) : coursePlan;
+        console.log("Tyope of course plans: " + typeof coursePlans);
+        console.log("Course Plans: " + coursePlans);
+        console.log("Course Plan Course List: " + courseList.length);
+        console.log("Type of Course List: " + typeof localStorage.getItem('term').courseNumList);
+        console.log("Course List Size: " + coursePlans.courseNumList.length);
+        coursePlans.courseNumList.forEach(value => {
             if(!coursePlans.courseNumList.includes(value)){
                 coursePlans.courseNumList.push(value);
                 console.log(value);
             }
 
         });
+        coursePlans.courseNumList = localStorage.getItem('courses') ? JSON.parse(localStorage.getItem('courses')) : coursePlan;
+        console.log("Course Array: " + coursePlans.courseNumList + "\nCourse Plan Course List: " + coursePlans.courseNumList.length);
         coursePlans.seasons = getSeason(new Date(lastTerm)) + " " + new Date(lastTerm).getFullYear();
         coursePlans.GPA = GPA;
         coursePlans.year = new Date(lastTerm).getFullYear();
         coursePlans.lastTerm = new Date(lastTerm);
         coursePlans.advising = new Date(advising);
-    
-
-      console.log("Season: " + coursePlans.seasons + "\nYear: " + 
-      coursePlans.year + "\nIs Course List Filled: " + 
-     coursePlans.courseNumList.length + "\nIs Course Plan Full: " + 
-     coursePlans.rows.length + "\nAdvising Term: " + 
-      coursePlans.advising + "\nLast Term: " + coursePlans.lastTerm + 
-      "\nSetting: " + coursePlans.setting + "\nGPA: " + coursePlans.GPA);
+        console.log("Season: " + coursePlans.seasons + "\nYear: " + 
+        coursePlans.year + "\nIs Course List Filled: " + 
+        coursePlans.courseNumList.length + "\nIs Course Plan Full: " + 
+        coursePlans.rows.length + "\nAdvising Term: " + 
+        coursePlans.advising + "\nLast Term: " + coursePlans.lastTerm + 
+        "\nSetting: " + coursePlans.setting + "\nGPA: " + coursePlans.GPA);
 
     };
 
@@ -67,16 +73,26 @@ const navigate = useNavigate();
 
 const handleSubmit = (e) => {
         e.preventDefault();
+        if(coursePlan.length === 0 || lastTerm === '' || GPA === '' || advising === ''){
+            alert("Please fill out all fields before submitting the course advising request.");
+            return;
+        } else if (coursePlans.length === 0 || coursePlans.courseNumList.length === 0 || coursePlans.lastTerm === '' || coursePlans.GPA === '' || coursePlans.advising === ''){
+            console.log("Course Plans: " + coursePlans);
+            addToCoursePlan();
+        }
 
-        addToCoursePlan();
+        
         const requestData = {
-            lastTerm: localStorage.getItem('term') ? JSON.parse(localStorage.getItem('term')).lastTerm : lastTerm,
-            GPA: localStorage.getItem('term') ? JSON.parse(localStorage.getItem('term')).GPA : GPA,
-            advising: localStorage.getItem('term') ? JSON.parse(localStorage.getItem('term')).advising : advising,
-            coursePlan: localStorage.getItem('term') ? JSON.parse(localStorage.getItem('term')).courseNumList : [],
+            lastTerm: new Date(lastTerm),
+            GPA: GPA,
+            advising: new Date(advising),
+            coursePlan: coursePlans.courseNumList ? coursePlans.courseNumList : coursePlan,
             email: localStorage.getItem('email'),
             name: localStorage.getItem('name')
         };
+        console.log("Course Plan: " + typeof requestData.coursePlan + "\nCourse Plan Length: " + requestData.coursePlan.length);
+       // requestData.coursePlan.map(course => console.log("Courses in request data: " + course));
+        console.log("Last Term: " + requestData.lastTerm + "\nGPA: " + requestData.GPA + "\nAdvising Term: " + requestData.advising + "\nCourse Plan: " + requestData.coursePlan + "\nEmail: " + requestData.email + "\nName: " + requestData.name  );
 
         axios.post('https://cs418project-aalle063.onrender.com/course-advising', requestData)
             .then(res => {
@@ -88,8 +104,8 @@ const handleSubmit = (e) => {
                 }
             })
             .catch(err => {
-                console.error('Error submitting course advising request:',  err.toString());
-                alert('Failed to submit course advising request. Please try again.' + err.toString());
+                console.error('Error submitting course advising request: ',  err.toString());
+                alert('Failed to submit course advising request. Please try again. ' + err.toString());
             });
     };
 
