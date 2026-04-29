@@ -131,7 +131,6 @@ app.post('/course-advising', async (req, res) => {
     
 
     const sql = "INSERT INTO course (email, term, gpa, advising, name, level) VALUES (?)";
-    console.log("Received course advising request with course plan: ", coursePlan);
 
     const value=[req.body.email, req.body.lastTerm, req.body.GPA, req.body.advising, req.body.name, req.body.level];
     db.query(sql, [value], (err, result) => {
